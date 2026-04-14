@@ -2,7 +2,9 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "commonjs",
+    "moduleResolution": "node",
     "lib": ["es2020"],
+    "types": ["node", "express", "jsonwebtoken", "multer"],
     "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
