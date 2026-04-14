@@ -28,6 +28,8 @@ import axios from 'axios';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { schemeDiscoverySchema, SchemeDiscoveryValues } from '@/lib/validation/scheme';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 interface Scheme {
   name: string;
@@ -41,17 +43,23 @@ export default function SchemeFinderPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
 
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm<SchemeDiscoveryValues>({
+    resolver: zodResolver(schemeDiscoverySchema),
+    defaultValues: {
+      age: 0,
+      gender: 'male',
+      state: '',
+      category: '',
+      income: 0,
+      occupation: 'student',
+    }
+  });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: SchemeDiscoveryValues) => {
     setIsLoading(true);
     try {
       // Keep existing API logic
-      const response = await axios.post('http://127.0.0.1:5050/api/v1/recommendation', {
-        ...data,
-        age: Number(data.age),
-        income: Number(data.income)
-      });
+      const response = await axios.post('http://127.0.0.1:5050/api/v1/recommendation', data);
       
       // Injecting random/mock scores for UI demonstration as requested (High/Medium/Low)
       const dataWithScores = (response.data.data || []).map((s: any) => ({

@@ -20,6 +20,13 @@ export function SignupForm() {
     formState: { errors },
   } = useForm<SignupValues>({
     resolver: zodResolver(signupSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      acceptTerms: false,
+    },
   });
 
   const onSubmit = async (data: SignupValues) => {

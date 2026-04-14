@@ -24,6 +24,8 @@ import {
 } from 'lucide-react';
 import schemeService from '@/services/scheme.service';
 import { toast } from 'sonner';
+import { schemeDiscoverySchema, SchemeDiscoveryValues } from '@/lib/validation/scheme';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 interface Scheme {
   name: string;
@@ -36,20 +38,27 @@ export default function SchemesPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
 
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm<SchemeDiscoveryValues>({
+    resolver: zodResolver(schemeDiscoverySchema),
+    defaultValues: {
+      age: 0,
+      gender: 'male',
+      state: 'Maharashtra',
+      category: 'general',
+      income: 0,
+      occupation: 'salaried',
+      education: 'graduate',
+      disabilityStatus: 'none',
+      farmerStatus: 'no',
+      studentStatus: 'no'
+    }
+  });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: SchemeDiscoveryValues) => {
     setIsLoading(true);
     try {
       // Using shared schemeService for centralized API calls
-      const result = await schemeService.getRecommendations({
-        age: Number(data.age),
-        gender: data.gender,
-        state: data.state,
-        income: Number(data.income),
-        category: data.category,
-        occupation: data.occupation
-      });
+      const result = await schemeService.getRecommendations(data);
       
       setRecommendations(result.data || []);
       setHasSearched(true);
