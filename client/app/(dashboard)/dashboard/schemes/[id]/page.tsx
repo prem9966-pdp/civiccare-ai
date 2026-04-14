@@ -6,7 +6,7 @@ import schemeService from '@/services/scheme.service';
 import { ProtectedRoute } from '@/components/auth/protected-route';
 import { EligibilityScore } from '@/components/dashboard/eligibility-score';
 import { SaveSchemeButton } from '@/components/dashboard/save-scheme-button';
-import { Loader2, ArrowLeft, Landmark, FileText, CheckCircle2, ChevronRight, Share2, Printer, ExternalLink } from 'lucide-react';
+import { Loader2, ArrowLeft, Landmark, FileText, CheckCircle2, ChevronRight, Share2, Printer, ExternalLink, Activity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { motion } from 'framer-motion';
