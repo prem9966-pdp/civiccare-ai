@@ -1,40 +1,25 @@
-import axios from "axios";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
+import { api } from "./auth.service";
 
 const documentService = {
   upload: async (formData: FormData) => {
-    const token = localStorage.getItem("auth_token");
-    const response = await axios.post(`${API_URL}/documents/upload`, formData, {
-      headers: { 
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data"
-      }
+    const response = await api.post("document/upload", formData, {
+      headers: { "Content-Type": "multipart/form-data" }
     });
     return response.data;
   },
 
   getAll: async () => {
-    const token = localStorage.getItem("auth_token");
-    const response = await axios.get(`${API_URL}/documents`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    const response = await api.get("document");
     return response.data;
   },
 
   getChecklist: async (schemeId: string) => {
-    const token = localStorage.getItem("auth_token");
-    const response = await axios.get(`${API_URL}/documents/checklist/${schemeId}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    const response = await api.get(`document/checklist/${schemeId}`);
     return response.data;
   },
 
   delete: async (id: string) => {
-    const token = localStorage.getItem("auth_token");
-    const response = await axios.delete(`${API_URL}/documents/${id}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    const response = await api.delete(`document/${id}`);
     return response.data;
   }
 };

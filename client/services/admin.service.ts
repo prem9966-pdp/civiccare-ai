@@ -1,63 +1,38 @@
-"use client"
-
-import axios from "axios";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
+import { api } from "./auth.service";
 
 const adminService = {
   getSummary: async () => {
-    const token = localStorage.getItem("auth_token");
-    const response = await axios.get(`${API_URL}/admin/summary`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    const response = await api.get("admin/summary");
     return response.data;
   },
 
   getUsers: async () => {
-    const token = localStorage.getItem("auth_token");
-    const response = await axios.get(`${API_URL}/admin/users`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    const response = await api.get("admin/users");
     return response.data;
   },
 
   getComplaints: async () => {
-    const token = localStorage.getItem("auth_token");
-    const response = await axios.get(`${API_URL}/admin/complaints`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    const response = await api.get("admin/complaints");
     return response.data;
   },
 
   upsertScheme: async (data: any) => {
-    const token = localStorage.getItem("auth_token");
-    const response = await axios.post(`${API_URL}/admin/schemes/upsert`, data, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    const response = await api.post("admin/schemes/upsert", data);
     return response.data;
   },
 
   deleteScheme: async (id: string) => {
-    const token = localStorage.getItem("auth_token");
-    const response = await axios.delete(`${API_URL}/admin/schemes/${id}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    const response = await api.delete(`admin/schemes/${id}`);
     return response.data;
   },
 
   upsertHospital: async (data: any) => {
-    const token = localStorage.getItem("auth_token");
-    const response = await axios.post(`${API_URL}/admin/hospitals/upsert`, data, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    const response = await api.post("admin/hospitals/upsert", data);
     return response.data;
   },
 
   deleteHospital: async (id: string) => {
-    const token = localStorage.getItem("auth_token");
-    const response = await axios.delete(`${API_URL}/admin/hospitals/${id}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    const response = await api.delete(`admin/hospitals/${id}`);
     return response.data;
   }
 };

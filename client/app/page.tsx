@@ -190,7 +190,7 @@ export default function Home() {
                 icon: Search,
                 color: 'text-blue-600',
                 bg: 'bg-blue-50',
-                href: '/scheme-finder'
+                href: '/dashboard/schemes'
               },
               {
                 title: 'Healthcare Map',

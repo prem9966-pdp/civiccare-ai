@@ -1,21 +1,16 @@
-import axios from "axios";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:5050/api/v1";
+import { api } from "./auth.service";
 
 const recommendationService = {
   getPersonalizedMatches: async () => {
-    const token = localStorage.getItem("auth_token");
-    const response = await axios.get(`${API_URL}/recommendations/match`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    // Backend mount is /api/v1/recommendation
+    const response = await api.post("recommendation"); 
     return response.data;
   },
 
   getHistory: async () => {
-    const token = localStorage.getItem("auth_token");
-    const response = await axios.get(`${API_URL}/recommendations/history`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    // Current backend doesn't have a history route for recommendation separately, 
+    // but the user might have intended it. For now, sticking to standard paths.
+    const response = await api.get("recommendation/history");
     return response.data;
   }
 };

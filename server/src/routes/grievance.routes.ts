@@ -9,7 +9,7 @@ router.use(authMiddleware);
 
 // Routes
 router.post("/", grievanceController.createGrievance);
-router.get("/my", grievanceController.getMyGrievances);
+router.get("/history", grievanceController.getMyGrievances);
 router.get("/:id", grievanceController.getGrievanceById);
 
 export default router;

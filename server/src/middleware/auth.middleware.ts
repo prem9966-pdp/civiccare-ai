@@ -22,7 +22,7 @@ export const authMiddleware = (
       id: string;
     };
 
-    (req as any).user = { _id: decoded.id };
+    (req as any).user = { id: decoded.id, _id: decoded.id };
 
     next();
   } catch (error) {

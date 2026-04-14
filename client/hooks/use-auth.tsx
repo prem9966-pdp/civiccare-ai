@@ -27,7 +27,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const publicRoutes = ["/", "/login", "/signup", "/register"];
 
   const refreshUser = React.useCallback(async () => {
-    const token = localStorage.getItem("auth_token");
+    const token = localStorage.getItem("token");
     if (!token) {
       setUser(null);
       setLoading(false);
@@ -39,7 +39,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(currentUser);
     } catch (error) {
       setUser(null);
-      localStorage.removeItem("auth_token");
+      localStorage.removeItem("token");
       localStorage.removeItem("user_data");
     } finally {
       setLoading(false);

@@ -1,30 +1,19 @@
-import axios from "axios";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:5050/api/v1";
+import { api } from "./auth.service";
 
 const schemeService = {
-  getSchemes: async (params: any) => {
-    const token = localStorage.getItem("auth_token");
-    const response = await axios.get(`${API_URL}/schemes`, {
-      params,
-      headers: token ? { Authorization: `Bearer ${token}` } : {}
-    });
+  // Use the recommendation engine for matching schemes
+  getRecommendations: async (data: any) => {
+    const response = await api.post("recommendation", data);
     return response.data;
   },
 
   getSchemeById: async (id: string) => {
-    const token = localStorage.getItem("auth_token");
-    const response = await axios.get(`${API_URL}/schemes/${id}`, {
-      headers: token ? { Authorization: `Bearer ${token}` } : {}
-    });
+    const response = await api.get(`schemes/${id}`);
     return response.data;
   },
 
   toggleSave: async (id: string) => {
-    const token = localStorage.getItem("auth_token");
-    const response = await axios.post(`${API_URL}/schemes/${id}/save`, {}, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    const response = await api.post(`schemes/${id}/save`, {});
     return response.data;
   }
 };

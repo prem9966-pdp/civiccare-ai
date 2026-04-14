@@ -11,10 +11,12 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, loading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
+    if (loading) return;
+
     // If not authenticated, redirect to login
     if (!isAuthenticated) {
       router.push('/login');
@@ -25,10 +27,10 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
     if (allowedRoles && user && !allowedRoles.includes(user.role)) {
       router.push('/dashboard'); // Or an unauthorized page
     }
-  }, [isAuthenticated, user, allowedRoles, router]);
+  }, [isAuthenticated, user, allowedRoles, router, loading]);
 
   // Loading state while checking auth
-  if (!isAuthenticated || (allowedRoles && user && !allowedRoles.includes(user.role))) {
+  if (loading || !isAuthenticated || (allowedRoles && user && !allowedRoles.includes(user.role))) {
     return (
       <div className="h-screen w-full flex flex-col items-center justify-center bg-slate-50/50">
         <Loader2 className="h-10 w-10 text-primary animate-spin mb-4" />

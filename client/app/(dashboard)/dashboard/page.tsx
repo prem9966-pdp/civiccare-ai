@@ -155,7 +155,7 @@ export default function DashboardPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { title: 'Scheme Finder', icon: Search, href: '/dashboard/scheme-finder', desc: 'Find eligible programs' },
+              { title: 'Scheme Finder', icon: Search, href: '/dashboard/schemes', desc: 'Find eligible programs' },
               { title: 'Healthcare Map', icon: MapPin, href: '/dashboard/hospital-map', desc: 'Locate nearby aid' },
               { title: 'Grievance Portal', icon: FileText, href: '/dashboard/grievances', desc: 'Report civic issues' },
               { title: 'My Profile', icon: User, href: '/dashboard/profile', desc: 'Manage your data' }

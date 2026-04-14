@@ -2,7 +2,7 @@ import axios from "axios";
 import { LoginValues, SignupValues } from "@/lib/validation/auth";
 import { IAuthResponse, IUser } from "@/types/auth";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5050/api/v1";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5051/api/v1";
 
 // Create axios instance
 const api = axios.create({
@@ -11,9 +11,11 @@ const api = axios.create({
 
 // Add interceptor to include token in headers
 api.interceptors.request.use((config) => {
-  const token = typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
   }
   return config;
 });
@@ -43,10 +45,10 @@ const authService = {
         }
 
         return {
-            success: success || false,
+            success: false,
             message: message || "Invalid credentials",
-            user: data?.user || null,
-            token: data?.token || "",
+            user: null as any,
+            token: "",
         };
     } catch (error: any) {
         return {
@@ -99,7 +101,7 @@ const authService = {
 
   logout: () => {
     if (typeof window !== "undefined") {
-        localStorage.removeItem("auth_token");
+        localStorage.removeItem("token");
         localStorage.removeItem("user_data");
     }
   },
@@ -125,7 +127,7 @@ const authService = {
 
   persistAuth: (user: any, token: string) => {
     if (typeof window !== "undefined") {
-        localStorage.setItem("auth_token", token);
+        localStorage.setItem("token", token);
         localStorage.setItem("user_data", JSON.stringify(user));
     }
   }

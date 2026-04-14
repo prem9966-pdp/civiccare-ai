@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 const actions = [
   { icon: FileCheck, name: "Upload Verification ID", href: "/dashboard/documents" },
-  { icon: Search, name: "Check Scheme Eligibility", href: "/scheme-finder" },
+  { icon: Search, name: "Check Scheme Eligibility", href: "/dashboard/schemes" },
   { icon: Bot, name: "Citizen Support Chat", href: "/dashboard/chat" },
   { icon: MapPin, name: "Locate Nearest Medical Aid", href: "/dashboard/help-centers" },
 ];

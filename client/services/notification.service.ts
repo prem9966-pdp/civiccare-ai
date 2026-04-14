@@ -1,37 +1,23 @@
-import axios from "axios";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
+import { api } from "./auth.service";
 
 const notificationService = {
   getNotifications: async () => {
-    const token = localStorage.getItem("auth_token");
-    const response = await axios.get(`${API_URL}/notifications`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    const response = await api.get("notification");
     return response.data;
   },
 
   markRead: async (id: string) => {
-    const token = localStorage.getItem("auth_token");
-    const response = await axios.patch(`${API_URL}/notifications/${id}/read`, {}, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    const response = await api.patch(`notification/${id}/read`, {});
     return response.data;
   },
 
   markAllRead: async () => {
-    const token = localStorage.getItem("auth_token");
-    const response = await axios.patch(`${API_URL}/notifications/read-all`, {}, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    const response = await api.patch("notification/read-all", {});
     return response.data;
   },
 
   getTimeline: async () => {
-    const token = localStorage.getItem("auth_token");
-    const response = await axios.get(`${API_URL}/notifications/timeline`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    const response = await api.get("notification/timeline");
     return response.data;
   }
 };

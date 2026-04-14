@@ -22,7 +22,7 @@ import {
   Briefcase,
   IndianRupee
 } from 'lucide-react';
-import axios from 'axios';
+import schemeService from '@/services/scheme.service';
 import { toast } from 'sonner';
 
 interface Scheme {
@@ -41,19 +41,23 @@ export default function SchemesPage() {
   const onSubmit = async (data: any) => {
     setIsLoading(true);
     try {
-      // Correcting port to 5051 and pluralizing route for match functionality
-      const response = await axios.post('http://localhost:5051/api/v1/schemes/match', {
-        ...data,
+      // Using shared schemeService for centralized API calls
+      const result = await schemeService.getRecommendations({
         age: Number(data.age),
-        income: Number(data.income)
+        gender: data.gender,
+        state: data.state,
+        income: Number(data.income),
+        category: data.category,
+        occupation: data.occupation
       });
       
-      setRecommendations(response.data.data || []);
+      setRecommendations(result.data || []);
       setHasSearched(true);
       toast.success("Eligibility scan complete!");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Discovery error:", error);
-      toast.error("Unable to fetch schemes. Please check your network.");
+      const errorMessage = error.response?.data?.message || error.message || "Unable to fetch schemes.";
+      toast.error(`Discovery Failed: ${errorMessage}`);
     } finally {
       setIsLoading(false);
     }
