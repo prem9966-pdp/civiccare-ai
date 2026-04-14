@@ -33,12 +33,12 @@ export const upsertScheme = asyncHandler(async (req: Request, res: Response) => 
     if (id) {
         scheme = await Scheme.findByIdAndUpdate(id, data, { new: true });
         await AdminActivity.create({ 
-            adminId: req.user?._id, action: 'UPDATE_SCHEME', targetId: id, targetType: 'Scheme', details: `Updated scheme: ${scheme?.title}` 
+            adminId: req.user?._id?.toString(), action: 'UPDATE_SCHEME', targetId: id, targetType: 'Scheme', details: `Updated scheme: ${scheme?.title}` 
         });
     } else {
         scheme = await Scheme.create(data);
         await AdminActivity.create({ 
-            adminId: req.user?._id, action: 'CREATE_SCHEME', targetId: scheme._id, targetType: 'Scheme', details: `Created scheme: ${scheme.title}` 
+            adminId: req.user?._id?.toString(), action: 'CREATE_SCHEME', targetId: scheme._id, targetType: 'Scheme', details: `Created scheme: ${scheme.title}` 
         });
     }
 
@@ -51,7 +51,7 @@ export const deleteScheme = asyncHandler(async (req: Request, res: Response) => 
     const { id } = req.params;
     await Scheme.findByIdAndDelete(id);
     await AdminActivity.create({ 
-        adminId: req.user?._id, action: 'DELETE_SCHEME', targetId: id, targetType: 'Scheme', details: `Deleted scheme ID: ${id}` 
+        adminId: req.user?._id?.toString(), action: 'DELETE_SCHEME', targetId: id, targetType: 'Scheme', details: `Deleted scheme ID: ${id}` 
     });
 
     return res.status(200).json(
@@ -67,12 +67,12 @@ export const upsertHospital = asyncHandler(async (req: Request, res: Response) =
     if (id) {
         hospital = await Hospital.findByIdAndUpdate(id, data, { new: true });
         await AdminActivity.create({ 
-            adminId: req.user?._id, action: 'UPDATE_HOSPITAL', targetId: id, targetType: 'Hospital', details: `Updated location: ${hospital?.name}` 
+            adminId: req.user?._id?.toString(), action: 'UPDATE_HOSPITAL', targetId: id, targetType: 'Hospital', details: `Updated location: ${hospital?.name}` 
         });
     } else {
         hospital = await Hospital.create(data);
         await AdminActivity.create({ 
-            adminId: req.user?._id, action: 'CREATE_HOSPITAL', targetId: hospital._id, targetType: 'Hospital', details: `Created location: ${hospital.name}` 
+            adminId: req.user?._id?.toString(), action: 'CREATE_HOSPITAL', targetId: hospital._id, targetType: 'Hospital', details: `Created location: ${hospital.name}` 
         });
     }
 
@@ -85,7 +85,7 @@ export const deleteHospital = asyncHandler(async (req: Request, res: Response) =
     const { id } = req.params;
     await Hospital.findByIdAndDelete(id);
     await AdminActivity.create({ 
-        adminId: req.user?._id, action: 'DELETE_LOCATION', targetId: id, targetType: 'Hospital', details: `Deleted location ID: ${id}` 
+        adminId: req.user?._id?.toString(), action: 'DELETE_LOCATION', targetId: id, targetType: 'Hospital', details: `Deleted location ID: ${id}` 
     });
 
     return res.status(200).json(

@@ -29,7 +29,7 @@ class RecommendationService {
     if (user._id) {
        await RecommendationSession.create({
          userId: user._id,
-         recommendations: rankedResults.map(r => ({
+         matches: rankedResults.map(r => ({
              schemeId: r.schemeId,
              score: r.score,
              matchedCriteria: r.matchedCriteria,

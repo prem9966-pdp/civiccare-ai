@@ -14,6 +14,8 @@ export interface IChatSession extends Document {
   userId: mongoose.Types.ObjectId;
   messages: IMessage[];
   title?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const chatSessionSchema: Schema<IChatSession> = new Schema(

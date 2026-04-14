@@ -7,7 +7,7 @@ import { ApiError } from '../utils/ApiError';
 
 export const listNotifications = asyncHandler(async (req: Request, res: Response) => {
   if (!req.user) throw new ApiError(401, "Auth required");
-  const notifications = await notificationService.getUserNotifications(req.user._id);
+  const notifications = await notificationService.getUserNotifications(req.user._id.toString());
 
   return res.status(200).json(
     new ApiResponse(200, notifications, "Notifications retrieved")
@@ -16,7 +16,7 @@ export const listNotifications = asyncHandler(async (req: Request, res: Response
 
 export const markRead = asyncHandler(async (req: Request, res: Response) => {
   if (!req.user) throw new ApiError(401, "Auth required");
-  const notification = await notificationService.markAsRead(req.user._id, req.params.id);
+  const notification = await notificationService.markAsRead(req.user._id.toString(), req.params.id);
 
   return res.status(200).json(
     new ApiResponse(200, notification, "Notification marked as read")
@@ -25,7 +25,7 @@ export const markRead = asyncHandler(async (req: Request, res: Response) => {
 
 export const markAllRead = asyncHandler(async (req: Request, res: Response) => {
     if (!req.user) throw new ApiError(401, "Auth required");
-    await notificationService.markAllAsRead(req.user._id);
+    await notificationService.markAllAsRead(req.user._id.toString());
 
     return res.status(200).json(
       new ApiResponse(200, null, "All notifications cleared")
@@ -34,7 +34,7 @@ export const markAllRead = asyncHandler(async (req: Request, res: Response) => {
 
 export const getTimeline = asyncHandler(async (req: Request, res: Response) => {
     if (!req.user) throw new ApiError(401, "Auth required");
-    const timeline = await historyService.getActivityTimeline(req.user._id);
+    const timeline = await historyService.getActivityTimeline(req.user._id.toString());
 
     return res.status(200).json(
       new ApiResponse(200, timeline, "Combined activity timeline generated")

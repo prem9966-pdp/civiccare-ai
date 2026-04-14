@@ -20,9 +20,7 @@ const startServer = async () => {
     let PORT = Number(ENV.PORT || 5051);
 
     const startApp = (currentPort: number) => {
-      const server = app.listen(currentPort, HOST);
-
-      server.on("listening", () => {
+      const server = app.listen(currentPort, HOST, () => {
         console.log(`
       -----------------------------------------
       🚀 SERVER IS RUNNING SUCCESSFULLY!
@@ -30,21 +28,18 @@ const startServer = async () => {
       📡 ENV  : ${ENV.NODE_ENV}
       🔗 PORT : ${currentPort}
       🌐 HOST : ${HOST}
-      🏥 URLS :
-      - Local:   http://127.0.0.1:${currentPort}/health
-      - Network: http://localhost:${currentPort}/health
       -----------------------------------------
         `);
-        console.log("[DEBUG] Listening for requests...");
       });
 
       server.on("error", (error: any) => {
-        if (error.code === "EADDRINUSE") {
+        if (error.code === "EADDRINUSE" && ENV.NODE_ENV !== "production") {
           console.warn(`\n[!] ATTENTION: Port ${currentPort} is already in use.`);
           console.log(`[!] Auto-switching to fallback port: ${currentPort + 1}\n`);
           startApp(currentPort + 1);
         } else {
           console.error("\n[!] UNEXPECTED SERVER ERROR:");
+          console.error(`[!] Code: ${error.code}`);
           console.error(`[!] Reason: ${error.message}\n`);
           process.exit(1);
         }

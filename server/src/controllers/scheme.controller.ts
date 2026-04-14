@@ -32,7 +32,7 @@ export const getSchemeDetails = asyncHandler(async (req: Request, res: Response)
 
 export const toggleSave = asyncHandler(async (req: Request, res: Response) => {
   if (!req.user) throw new ApiError(401, "Auth required");
-  const saved = await schemeService.toggleSaveScheme(req.user._id, req.params.id);
+  const saved = await schemeService.toggleSaveScheme(req.user._id.toString(), req.params.id);
 
   return res.status(200).json(
     new ApiResponse(200, saved, "Scheme save status toggled")

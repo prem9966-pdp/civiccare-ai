@@ -2,19 +2,20 @@ import mongoose, { Schema, Document } from "mongoose";
 
 export interface IRecommendationSession extends Document {
   userId: mongoose.Types.ObjectId;
-  recommendations: {
+  matches: {
     schemeId: mongoose.Types.ObjectId;
     score: number;
     matchedCriteria: string[];
     missingCriteria: string[];
   }[];
-  timestamp: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const recommendationSessionSchema: Schema<IRecommendationSession> = new Schema(
   {
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true, index: true },
-    recommendations: [
+    matches: [
       {
         schemeId: { type: Schema.Types.ObjectId, ref: "Scheme", required: true },
         score: { type: Number, required: true },
@@ -22,7 +23,6 @@ const recommendationSessionSchema: Schema<IRecommendationSession> = new Schema(
         missingCriteria: [String],
       },
     ],
-    timestamp: { type: Date, default: Date.now },
   },
   { timestamps: true }
 );

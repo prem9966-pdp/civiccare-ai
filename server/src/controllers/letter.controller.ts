@@ -12,10 +12,10 @@ export const createDraft = asyncHandler(async (req: Request, res: Response) => {
   console.log("[DRAFT BACKEND] req.body:", req.body);
   console.log("[DRAFT BACKEND] AI key exists:", !!process.env.AI_API_KEY);
 
-  if (!(req as any).user) throw new ApiError(401, "Auth required");
+  if (!req.user) throw new ApiError(401, "Auth required");
 
   try {
-    const draft = await letterService.generateDraft((req as any).user.id, req.body);
+    const draft = await letterService.generateDraft(req.user._id.toString(), req.body);
     
     // MANDATORY DEBUG LOGS (Step 3)
     console.log("[DRAFT BACKEND] Draft result:", draft);
@@ -32,7 +32,7 @@ export const createDraft = asyncHandler(async (req: Request, res: Response) => {
 
 export const getMyLetters = asyncHandler(async (req: Request, res: Response) => {
   if (!req.user) throw new ApiError(401, "Auth required");
-  const letters = await letterService.getLetters(req.user._id);
+  const letters = await letterService.getLetters(req.user._id.toString());
 
   return res.status(200).json(
     new ApiResponse(200, letters, "Historical letters retrieved")
@@ -42,7 +42,7 @@ export const getMyLetters = asyncHandler(async (req: Request, res: Response) => 
 export const updateLetterContent = asyncHandler(async (req: Request, res: Response) => {
     if (!req.user) throw new ApiError(401, "Auth required");
     const { content } = req.body;
-    const letter = await letterService.updateLetter(req.user._id, req.params.id, content);
+    const letter = await letterService.updateLetter(req.user._id.toString(), req.params.id, content);
 
     return res.status(200).json(
       new ApiResponse(200, letter, "Letter content finalized")
@@ -52,7 +52,7 @@ export const updateLetterContent = asyncHandler(async (req: Request, res: Respon
 export const exportPDF = asyncHandler(async (req: Request, res: Response) => {
     if (!req.user) throw new ApiError(401, "Auth required");
     const { id } = req.params;
-    const letters = await letterService.getLetters(req.user._id);
+    const letters = await letterService.getLetters(req.user._id.toString());
     const letter = letters.find(l => l._id.toString() === id);
 
     if (!letter) throw new ApiError(404, "Letter not found");

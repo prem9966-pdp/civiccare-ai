@@ -9,6 +9,8 @@ export interface IUploadedDocument extends Document {
   fileSize: number;
   mimeType: string;
   status: 'pending' | 'verified' | 'rejected';
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const uploadedDocumentSchema: Schema<IUploadedDocument> = new Schema(

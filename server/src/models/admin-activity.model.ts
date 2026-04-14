@@ -6,6 +6,8 @@ export interface IAdminActivity extends Document {
   targetId: string;
   targetType: string;
   details: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const adminActivitySchema: Schema<IAdminActivity> = new Schema(

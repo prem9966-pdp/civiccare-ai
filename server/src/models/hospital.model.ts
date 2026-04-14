@@ -13,6 +13,8 @@ export interface IHospital extends Document {
   };
   services: string[];
   bedAvailability?: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const hospitalSchema: Schema<IHospital> = new Schema(

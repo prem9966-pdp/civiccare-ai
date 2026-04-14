@@ -19,6 +19,8 @@ export interface IScheme extends Document {
     disabilityRequired?: boolean;
     employment?: string[];
   };
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const schemeSchema: Schema<IScheme> = new Schema(

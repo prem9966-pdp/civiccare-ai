@@ -10,7 +10,7 @@ export const postMessage = asyncHandler(async (req: Request, res: Response) => {
   const { content, sessionId } = req.body;
   if (!content) throw new ApiError(400, "Content cannot be empty");
 
-  const result = await chatService.sendMessage(req.user._id, content, sessionId);
+  const result = await chatService.sendMessage(req.user._id.toString(), content, sessionId);
 
   return res.status(200).json(
     new ApiResponse(200, result, "Message processed successfully")
@@ -20,7 +20,7 @@ export const postMessage = asyncHandler(async (req: Request, res: Response) => {
 export const listSessions = asyncHandler(async (req: Request, res: Response) => {
   if (!req.user) throw new ApiError(401, "Auth required");
 
-  const sessions = await chatService.getSessions(req.user._id);
+  const sessions = await chatService.getSessions(req.user._id.toString());
 
   return res.status(200).json(
     new ApiResponse(200, sessions, "Conversation list retrieved")
@@ -30,7 +30,7 @@ export const listSessions = asyncHandler(async (req: Request, res: Response) => 
 export const getSessionDetails = asyncHandler(async (req: Request, res: Response) => {
   if (!req.user) throw new ApiError(401, "Auth required");
 
-  const session = await chatService.getSessionById(req.user._id, req.params.id);
+  const session = await chatService.getSessionById(req.user._id.toString(), req.params.id);
 
   return res.status(200).json(
     new ApiResponse(200, session, "Chat conversation retrieved")

@@ -25,7 +25,7 @@ export const uploadDocument = asyncHandler(async (req: Request, res: Response) =
       mimeType: req.file.mimetype
   };
 
-  const document = await documentService.saveDocument(req.user._id, docData);
+  const document = await documentService.saveDocument(req.user._id.toString(), docData);
 
   return res.status(201).json(
     new ApiResponse(201, document, "Document uploaded successfully")
@@ -34,7 +34,7 @@ export const uploadDocument = asyncHandler(async (req: Request, res: Response) =
 
 export const getMyDocuments = asyncHandler(async (req: Request, res: Response) => {
   if (!req.user) throw new ApiError(401, "Auth required");
-  const documents = await documentService.getUserDocuments(req.user._id);
+  const documents = await documentService.getUserDocuments(req.user._id.toString());
 
   return res.status(200).json(
     new ApiResponse(200, documents, "Documents retrieved successfully")
@@ -44,7 +44,7 @@ export const getMyDocuments = asyncHandler(async (req: Request, res: Response) =
 export const getChecklist = asyncHandler(async (req: Request, res: Response) => {
     if (!req.user) throw new ApiError(401, "Auth required");
     const { schemeId } = req.params;
-    const checklistData = await documentService.getChecklistForScheme(req.user._id, schemeId);
+    const checklistData = await documentService.getChecklistForScheme(req.user._id.toString(), schemeId);
 
     return res.status(200).json(
       new ApiResponse(200, checklistData, "Scheme checklist generated")
@@ -53,7 +53,7 @@ export const getChecklist = asyncHandler(async (req: Request, res: Response) => 
 
 export const deleteDocument = asyncHandler(async (req: Request, res: Response) => {
     if (!req.user) throw new ApiError(401, "Auth required");
-    await documentService.deleteDocument(req.user._id, req.params.id);
+    await documentService.deleteDocument(req.user._id.toString(), req.params.id);
 
     return res.status(200).json(
       new ApiResponse(200, null, "Document deleted successfully")

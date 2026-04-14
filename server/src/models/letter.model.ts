@@ -8,6 +8,8 @@ export interface IGeneratedLetter extends Document {
   content: string; // HTML or Markdown
   language: string;
   status: 'draft' | 'final';
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const letterSchema: Schema<IGeneratedLetter> = new Schema(

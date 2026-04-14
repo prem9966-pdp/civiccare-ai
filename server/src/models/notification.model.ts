@@ -7,6 +7,8 @@ export interface INotification extends Document {
   type: 'info' | 'success' | 'warning' | 'alert';
   isRead: boolean;
   link?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const notificationSchema: Schema<INotification> = new Schema(

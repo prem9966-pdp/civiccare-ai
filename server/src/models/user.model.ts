@@ -8,6 +8,21 @@ export interface IUser extends Document {
   password: string;
   role: 'user' | 'admin';
   isVerified: boolean;
+  profile: {
+    phone?: string;
+    state?: string;
+    city?: string;
+    gender?: string;
+    age?: number;
+    disabilityType?: string;
+    incomeBracket?: string;
+    occupation?: string;
+    languagePreference?: string;
+    category?: string;
+    incomeRange?: string;
+    healthIssues?: string[];
+  };
+  savedSchemes: mongoose.Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
   comparePassword: (password: string) => Promise<boolean>;
@@ -44,6 +59,26 @@ const userSchema = new Schema<IUser>(
       type: Boolean,
       default: false,
     },
+    profile: {
+      phone: String,
+      state: String,
+      city: String,
+      gender: String,
+      age: Number,
+      disabilityType: String,
+      incomeBracket: String,
+      occupation: String,
+      languagePreference: String,
+      category: String,
+      incomeRange: String,
+      healthIssues: [String],
+    },
+    savedSchemes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Scheme',
+      },
+    ],
   },
   {
     timestamps: true,
