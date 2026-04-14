@@ -124,7 +124,7 @@ export default function SchemeFinderPage() {
                          <Input 
                            type="number" 
                            placeholder="25" 
-                           {...register('age', { required: true, min: 1 })}
+                           {...register('age', { required: true, min: 1, valueAsNumber: true })}
                            className="rounded-2xl h-14 bg-slate-50 border-none focus-visible:ring-2 focus-visible:ring-primary/10 text-base font-bold transition-all"
                          />
                       </div>
@@ -150,7 +150,7 @@ export default function SchemeFinderPage() {
                       <Input 
                           type="number" 
                           placeholder="500,000" 
-                          {...register('income', { required: true })}
+                          {...register('income', { required: true, valueAsNumber: true })}
                           className="rounded-2xl h-14 bg-slate-50 border-none focus-visible:ring-2 focus-visible:ring-primary/10 text-base font-bold transition-all"
                       />
                     </div>

@@ -114,7 +114,7 @@ export default function SchemesPage() {
                    <Input 
                      type="number" 
                      placeholder="e.g. 25" 
-                     {...register('age', { required: true, min: 1 })}
+                     {...register('age', { required: true, min: 1, valueAsNumber: true })}
                      className="rounded-2xl h-14 bg-slate-50 border-slate-100 focus:bg-white transition-all text-sm font-bold"
                    />
                 </div>
@@ -170,7 +170,7 @@ export default function SchemesPage() {
                    <Input 
                       type="number" 
                       placeholder="e.g. 500000" 
-                      {...register('income', { required: true })}
+                      {...register('income', { required: true, valueAsNumber: true })}
                       className="rounded-2xl h-14 bg-slate-50 border-slate-100 focus:bg-white"
                    />
                 </div>
