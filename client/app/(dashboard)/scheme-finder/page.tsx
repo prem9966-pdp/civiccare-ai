@@ -28,7 +28,7 @@ import axios from 'axios';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { schemeDiscoverySchema, SchemeDiscoveryValues } from '@/lib/validation/scheme';
+import { schemeDiscoverySchema, SchemeDiscoveryFormInput, SchemeDiscoveryFormOutput } from '@/lib/validation/scheme';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 interface Scheme {
@@ -43,7 +43,7 @@ export default function SchemeFinderPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
 
-  const { register, handleSubmit, formState: { errors } } = useForm<SchemeDiscoveryValues>({
+  const { register, handleSubmit, formState: { errors } } = useForm<SchemeDiscoveryFormInput, any, SchemeDiscoveryFormOutput>({
     resolver: zodResolver(schemeDiscoverySchema),
     defaultValues: {
       age: 0,
@@ -55,7 +55,7 @@ export default function SchemeFinderPage() {
     }
   });
 
-  const onSubmit = async (data: SchemeDiscoveryValues) => {
+  const onSubmit = async (data: SchemeDiscoveryFormOutput) => {
     setIsLoading(true);
     try {
       // Keep existing API logic

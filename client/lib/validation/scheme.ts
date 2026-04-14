@@ -13,4 +13,5 @@ export const schemeDiscoverySchema = z.object({
   studentStatus: z.string().optional()
 });
 
-export type SchemeDiscoveryValues = z.infer<typeof schemeDiscoverySchema>;
+export type SchemeDiscoveryFormInput = z.input<typeof schemeDiscoverySchema>;
+export type SchemeDiscoveryFormOutput = z.output<typeof schemeDiscoverySchema>;
