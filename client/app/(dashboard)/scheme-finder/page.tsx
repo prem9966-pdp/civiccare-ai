@@ -21,7 +21,8 @@ import {
   Calendar,
   Bookmark,
   ChevronRight,
-  Sparkles
+  Sparkles,
+  Zap
 } from 'lucide-react';
 import axios from 'axios';
 import { toast } from 'sonner';

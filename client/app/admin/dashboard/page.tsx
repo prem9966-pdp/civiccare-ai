@@ -18,6 +18,7 @@ import {
   Layers
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<any>(null);

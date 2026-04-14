@@ -1,6 +1,6 @@
 import React from 'react';
 import { HospitalCard } from './hospital-card';
-import { Search, Loader2, Filters, ChevronRight } from 'lucide-react';
+import { Search, Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { motion, AnimatePresence } from 'framer-motion';
 
