@@ -12,6 +12,12 @@ export interface IUser {
     income?: number;
     phone?: string;
     city?: string;
+    state?: string;
+    languagePreference?: string;
+    occupation?: string;
+    category?: string;
+    incomeRange?: string;
+    healthIssues?: string[];
   };
 }
 
