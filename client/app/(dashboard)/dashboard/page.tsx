@@ -5,6 +5,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { ProtectedRoute } from '@/components/auth/protected-route';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { 
   FileText, 
   MapPin, 
@@ -28,6 +29,7 @@ import hospitalService from '@/services/hospital.service';
 
 export default function DashboardPage() {
   const { user, loading: authLoading } = useAuth();
+  const router = useRouter();
   const [stats, setStats] = useState({
     grievances: 0,
     hospitals: 0,
@@ -156,12 +158,15 @@ export default function DashboardPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               { title: 'Scheme Finder', icon: Search, href: '/dashboard/schemes', desc: 'Find eligible programs' },
-              { title: 'Healthcare Map', icon: MapPin, href: '/dashboard/hospital-map', desc: 'Locate nearby aid' },
-              { title: 'Grievance Portal', icon: FileText, href: '/dashboard/grievances', desc: 'Report civic issues' },
+              { title: 'Healthcare Map', icon: MapPin, href: '/healthcare-map', desc: 'Locate nearby aid' },
+              { title: 'Grievance Portal', icon: FileText, href: '/grievances/submit', desc: 'Report civic issues' },
               { title: 'My Profile', icon: User, href: '/dashboard/profile', desc: 'Manage your data' }
             ].map((action, i) => (
               <motion.div key={action.title} variants={itemVariants}>
-                <Link href={action.href} className="group block">
+                <div 
+                  onClick={() => router.push(action.href)} 
+                  className="group block cursor-pointer"
+                >
                   <div className="bg-white p-8 rounded-[40px] border border-slate-100 shadow-sm transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5 group-hover:bg-primary group-hover:border-primary relative overflow-hidden h-full">
                     <div className="absolute -right-4 -top-4 bg-accent/10 h-24 w-24 rounded-full group-hover:bg-white/10 transition-colors" />
                     
@@ -178,7 +183,7 @@ export default function DashboardPage() {
                       </div>
                     </div>
                   </div>
-                </Link>
+                </div>
               </motion.div>
             ))}
           </div>
