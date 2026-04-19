@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { asyncHandler } from "../utils/asyncHandler";
 import { ApiResponse } from "../utils/ApiResponse";
 
-// Standardized Hospital Dataset (Mumbai + Delhi)
+// Standardized Hospital Dataset (Expanded with more cities)
 const hospitals = [
   // MUMBAI HUBS
   {
@@ -57,19 +57,6 @@ const hospitals = [
     latitude: 19.1009,
     longitude: 72.8407
   },
-  {
-    _id: "m5",
-    name: "H. N. Reliance Foundation Hospital",
-    type: "private",
-    city: "Mumbai",
-    area: "Girgaon",
-    address: "Prarthana Samaj, Girgaon, Mumbai, Maharashtra 400004",
-    phone: "022 6130 5000",
-    specialty: "Pediatrics, Cardiology",
-    mapLink: "https://www.google.com/maps/search/Reliance+Hospital+Mumbai",
-    latitude: 18.9568,
-    longitude: 72.8203
-  },
 
   // DELHI HUBS
   {
@@ -98,85 +85,105 @@ const hospitals = [
     latitude: 28.5284,
     longitude: 77.2117
   },
+
+  // PUNE HUBS (Adding new data to test location search)
   {
-    _id: "d3",
-    name: "Safdarjung Hospital",
-    type: "government",
-    city: "Delhi",
-    area: "Ansari Nagar East",
-    address: "Ansari Nagar East, New Delhi, Delhi 110029",
-    phone: "011 2670 7444",
-    specialty: "Trauma, Maternity",
-    mapLink: "https://www.google.com/maps/search/Safdarjung+Hospital+Delhi",
-    latitude: 28.5681,
-    longitude: 77.2066
-  },
-  {
-    _id: "d4",
-    name: "Fortis Escorts Heart Institute",
+    _id: "p1",
+    name: "Noble Hospital",
     type: "private",
-    city: "Delhi",
-    area: "Okhla",
-    address: "Okhla Road, Sukhdev Vihar, New Delhi, Delhi 110025",
-    phone: "011 4713 5000",
-    specialty: "Heart, Liver",
-    mapLink: "https://www.google.com/maps/search/Fortis+Escorts+Delhi",
-    latitude: 28.5606,
-    longitude: 77.2735
+    city: "Pune",
+    area: "Hadapsar",
+    address: "153, Magarpatta City Rd, Hadapsar, Pune, Maharashtra 411013",
+    phone: "020 6135 6000",
+    specialty: "Multispeciality",
+    mapLink: "https://www.google.com/maps/search/Noble+Hospital+Pune",
+    latitude: 18.5133,
+    longitude: 73.9248
   },
   {
-    _id: "d5",
-    name: "Ram Manohar Lohia Hospital",
+    _id: "p2",
+    name: "Sassoon General Hospital",
     type: "government",
-    city: "Delhi",
-    area: "Connaught Place",
-    address: "Baba Kharak Singh Rd, nearby Gurudwara Bangla Sahib, Connaught Place, New Delhi 110001",
-    phone: "011 2336 5525",
+    city: "Pune",
+    area: "Station Road",
+    address: "Jai Prakash Narayan Road, Pune, Maharashtra 411001",
+    phone: "020 2612 8000",
     specialty: "General Medicine",
-    mapLink: "https://www.google.com/maps/search/RML+Hospital+Delhi",
-    latitude: 28.6254,
-    longitude: 77.2023
+    mapLink: "https://www.google.com/maps/search/Sassoon+Hospital+Pune",
+    latitude: 18.5283,
+    longitude: 73.8633
+  },
+  {
+    _id: "p3",
+    name: "Ruby Hall Clinic",
+    type: "private",
+    city: "Pune",
+    area: "Sassoon Road",
+    address: "40, Sassoon Rd, Sangamvadi, Pune, Maharashtra 411001",
+    phone: "020 6645 5100",
+    specialty: "Cardiology",
+    mapLink: "https://www.google.com/maps/search/Ruby+Hall+Clinic+Pune",
+    latitude: 18.5323,
+    longitude: 73.8748
+  },
+
+  // BANGALORE HUBS
+  {
+    _id: "b1",
+    name: "Narayana Health City",
+    type: "private",
+    city: "Bangalore",
+    area: "Bommasandra",
+    address: "258/A, Bommasandra Industrial Area, Bangalore, Karnataka 560099",
+    phone: "080 6750 6750",
+    specialty: "Cardiac Care",
+    mapLink: "https://www.google.com/maps/search/Narayana+Health+City+Bangalore",
+    latitude: 12.8123,
+    longitude: 77.6946
+  },
+  {
+    _id: "b2",
+    name: "Victoria Hospital",
+    type: "government",
+    city: "Bangalore",
+    area: "Kalasipalaya",
+    address: "Near City Market, Fort, Bangalore, Karnataka 560002",
+    phone: "080 2670 1150",
+    specialty: "General",
+    mapLink: "https://www.google.com/maps/search/Victoria+Hospital+Bangalore",
+    latitude: 12.9642,
+    longitude: 77.5758
   }
 ];
 
 export const listHospitals = asyncHandler(async (req: Request, res: Response) => {
-  // CRITICAL: MANDATORY DEBUG LOGS
-  console.log("[HOSPITAL BACKEND] Incoming Raw Query:", req.query);
-
-  let cityQuery = (req.query.city || "").toString().toLowerCase().trim();
+  const cityQuery = (req.query.city || "").toString().toLowerCase().trim();
   const areaQuery = (req.query.area || "").toString().toLowerCase().trim();
   const typeQuery = (req.query.type || "").toString().toLowerCase().trim();
 
-  // Standardize: "New Delhi" should map to "Delhi"
-  if (cityQuery.includes("delhi")) cityQuery = "delhi";
-
-  console.log("[HOSPITAL BACKEND] Standardized Query:", { cityQuery, areaQuery, typeQuery });
-  console.log("[HOSPITAL BACKEND] Total Dataset size:", hospitals.length);
-
   const filteredHospitals = hospitals.filter((h) => {
-    // 1. City Match (Case-insensitive, Optimized)
+    // 1. City Match (Support partial match, empty query = all)
     const cityMatch = !cityQuery || h.city.toLowerCase().includes(cityQuery);
 
-    // 2. Area Match (Case-insensitive, Partial Address Support)
+    // 2. Area Match
     const areaMatch = !areaQuery || 
                      h.area.toLowerCase().includes(areaQuery) || 
                      h.address.toLowerCase().includes(areaQuery);
 
-    // 3. Type Match (All, Government, Private)
-    const typeMatch = !typeQuery || 
-                     typeQuery === "all" || 
-                     h.type.toLowerCase() === typeQuery;
+    // 3. Type Match
+    let typeMatch = true;
+    if (typeQuery && typeQuery !== "all") {
+        if (typeQuery === "public") {
+            typeMatch = h.type.toLowerCase() === "government";
+        } else if (typeQuery === "private") {
+            typeMatch = h.type.toLowerCase() === "private";
+        } else {
+            typeMatch = h.type.toLowerCase() === typeQuery;
+        }
+    }
 
     return cityMatch && areaMatch && typeMatch;
   });
-
-  // MANDATORY DEBUG LOGS
-  console.log("[HOSPITAL BACKEND] Filtered Results Count:", filteredHospitals.length);
-  if (filteredHospitals.length > 0) {
-      console.log("[HOSPITAL BACKEND] Sample matched item:", filteredHospitals[0].name);
-  } else {
-      console.log("[HOSPITAL BACKEND] WARNING: ZERO RESULTS RETURNED.");
-  }
 
   return res.status(200).json(
     new ApiResponse(200, filteredHospitals, "Hospitals data retrieved successfully")
@@ -184,7 +191,11 @@ export const listHospitals = asyncHandler(async (req: Request, res: Response) =>
 });
 
 export const getDetails = asyncHandler(async (req: Request, res: Response) => {
-  const hospital = hospitals.find(h => h._id === req.params.id) || hospitals[0];
+  const hospital = hospitals.find(h => h._id === req.params.id);
+
+  if (!hospital) {
+    return res.status(404).json(new ApiResponse(404, null, "Hospital not found"));
+  }
 
   return res.status(200).json(
     new ApiResponse(200, hospital, "Hospital details retrieved")

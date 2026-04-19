@@ -33,10 +33,10 @@ const startServer = async () => {
       });
 
       server.on("error", (error: any) => {
-        if (error.code === "EADDRINUSE" && ENV.NODE_ENV !== "production") {
-          console.warn(`\n[!] ATTENTION: Port ${currentPort} is already in use.`);
-          console.log(`[!] Auto-switching to fallback port: ${currentPort + 1}\n`);
-          startApp(currentPort + 1);
+        if (error.code === "EADDRINUSE") {
+          console.error(`\n[!] ERROR: Port ${currentPort} is already in use.`);
+          console.error(`[!] Please kill the process on port ${currentPort} and try again.\n`);
+          process.exit(1);
         } else {
           console.error("\n[!] UNEXPECTED SERVER ERROR:");
           console.error(`[!] Code: ${error.code}`);
@@ -62,6 +62,3 @@ const startServer = async () => {
 };
 
 startServer();
-
-
-

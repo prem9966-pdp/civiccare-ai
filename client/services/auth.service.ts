@@ -2,7 +2,7 @@ import axios from "axios";
 import { LoginValues, SignupValues } from "@/lib/validation/auth";
 import { IAuthResponse, IUser } from "@/types/auth";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5051/api/v1";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://civiccare-backend-zgwa.onrender.com/api/v1";
 
 // Create axios instance
 const api = axios.create({
