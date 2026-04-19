@@ -15,7 +15,7 @@ interface ChatMessageProps {
 }
 
 export function ChatMessage({ message }: ChatMessageProps) {
-  const isAI = message.sender === "ai" || message.sender === "counselor";
+  const isAI = message.sender === "ai";
 
   return (
     <motion.div 
