@@ -5,33 +5,34 @@ import { ENV } from "../config/env";
 class AIService {
   /**
    * Generates a counselor response using Gemini AI.
-   * Logic:
-   * 1. Detect Emergency.
-   * 2. Call Gemini API.
-   * 3. Fallback to mock logic if API fails or No key.
+   * Ensures zero generic replies and forces structured output.
    */
   async generateResponse(userMessage: string, history: any[] = []) {
     const isEmergency = this.detectEmergency(userMessage);
     const apiKey = ENV.GEMINI_API_KEY || ENV.AI_API_KEY;
 
-    const isPlaceholder = !apiKey || 
-                          apiKey.includes("your_") || 
-                          apiKey === "your_api_key" || 
-                          apiKey === "your_gemini_key";
+    // Strict check for API Key placeholder or invalidity
+    const isInvalidKey = !apiKey || 
+                         apiKey.includes("your_") || 
+                         apiKey === "your_api_key" || 
+                         apiKey === "your_gemini_key" ||
+                         apiKey.length < 15;
 
-    if (isPlaceholder) {
-      console.log(`[AI_SERVICE] ⚠️ FALLBACK MODE: No valid API key found. Using Mock Logic.`);
-      return this.generateMockResponse(userMessage, isEmergency, history.length);
+    if (isInvalidKey) {
+      console.log(`[AI_SERVICE] ⚠️ SYSTEM ALERT: No valid API key. Using High-Quality Structured Fallback.`);
+      return this.generateMockResponse(userMessage, isEmergency);
     }
 
     try {
-      console.log(`[AI_SERVICE] 🚀 LIVE MODE: Calling Gemini API...`);
-      // Prepare prompt with context
-      const chatHistory = history
-        .map((m) => `${m.sender === "user" ? "Citizen" : "Counselor"}: ${m.content}`)
+      console.log(`[AI_SERVICE] 🚀 Live Logic: Consulting AI with System Prompt...`);
+      
+      // Construct clean history context
+      const chatContext = history
+        .slice(-6) 
+        .map((m) => `${m.sender === "user" ? "Citizen" : "CivicCare AI"}: ${m.content}`)
         .join("\n");
 
-      const prompt = `${SYSTEM_PROMPT}\n\nCONVERSATION HISTORY:\n${chatHistory}\nCitizen: ${userMessage}\nCounselor:`;
+      const prompt = `CORE INSTRUCTION: ${SYSTEM_PROMPT}\n\nCONVERSATION SO FAR:\n${chatContext}\n\nCURRENT REQUEST:\nCitizen: ${userMessage}\nCivicCare AI:`;
 
       const response = await axios.post(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
@@ -40,25 +41,23 @@ class AIService {
         },
         {
           headers: { "Content-Type": "application/json" },
-          timeout: 15000,
+          timeout: 12000,
         }
       );
 
       const content = response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
-      if (!content) {
-        throw new Error("Empty response from AI engine");
+      if (!content || typeof content !== 'string' || content.length < 5) {
+        throw new Error("Invalid response from AI model.");
       }
 
-      console.log(`[AI_SERVICE] ✅ SUCCESS: Gemini responded successfully.`);
       return {
         content: content.trim(),
         isEmergency,
       };
     } catch (error: any) {
-      console.error(`[AI_SERVICE] ❌ API ERROR: ${error.response?.data?.error?.message || error.message}`);
-      console.log(`[AI_SERVICE] 🔄 FALLBACK: Reverting to Mock Response due to error.`);
-      return this.generateMockResponse(userMessage, isEmergency, history.length);
+      console.error(`[AI_SERVICE] ❌ API FAILURE: ${error.message}`);
+      return this.generateMockResponse(userMessage, isEmergency);
     }
   }
 
@@ -67,44 +66,56 @@ class AIService {
     return EMERGENCY_KEYWORDS.some((k) => lower.includes(k));
   }
 
-  private generateMockResponse(message: string, isEmergency: boolean, historyLen: number = 0) {
+  /**
+   * Premium Fallback Logic (Zero Generic Phrases)
+   * Provides clean, structured Markdown responses when API fails.
+   */
+  private generateMockResponse(message: string, isEmergency: boolean) {
     const input = message.toLowerCase();
-    let content = "";
-
-    // 1. Emergency Handling (Highest Priority)
+    
     if (isEmergency) {
       return {
-        content: "⚠️ [EMERGENCY ACTION]: Please call 102 (Ambulance) or 100 (Police) immediately. Find the nearest hospital using our 'Help Centers' map. Stay calm. I am monitoring your location for nearby clinics.",
+        content: "### ⚠️ EMERGENCY ACTION REQUIRED\nPlease dial **102 (Ambulance)** or **108 (Emergency Operations)** immediately.\n\n**Steps:**\n- Locate the nearest Hospital using the **Help Centers Map** in your dashboard.\n- Keep your **Aadhar Card** or medical ID available for the admission team.\n- Stay calm and keep your phone line open for emergency services.\n\n**Tip:** You can check for Blood availability in the medical registry section.",
         isEmergency: true
       };
     }
 
-    // 2. Intent Detection
-    if (input.includes("grievance") || input.includes("complain") || input.includes("issue")) {
-      content = "To file a **formal grievance**, follow these steps:\n- Go to the **Grievance Portal** in your dashboard.\n- Click on 'New Request' and select the relevant category (e.g., Water, Electricity, Road).\n- Upload a photo of the issue if possible.\n- Use your **Aadhar ID** to track the status in real-time.";
-    } 
-    else if (input.includes("student") || input.includes("scholarship") || input.includes("education")) {
-      content = "For **students**, I recommend checking these schemes:\n- **Post-Matric Scholarship**: For SC/ST/OBC students.\n- **PM-USP**: Financial support for higher education.\n- **Kanya Sumangala**: Support for the girl child's education.\n\nYou can find these in the **Scheme Finder** section.";
-    }
-    else if (input.includes("farmer") || input.includes("kisan") || input.includes("agriculture")) {
-      content = "For **farmers**, there are several life-changing schemes available:\n- **PM-Kisan**: ₹6,000 annual direct income support.\n- **PM-Fasal Bima**: Insurance for your crops against damage.\n- **Soil Health Card**: Optimize your yield through soil testing.\n\nI can help you prepare the land documents needed for these. Would you like to proceed?";
-    }
-    else if (input.includes("hospital") || input.includes("medical") || input.includes("doctor")) {
-      content = "I can help with **healthcare access**:\n- Use our **Healthcare Map** to find verified public hospitals near you.\n- Check eligibility for **PM-JAY (Ayushman Bharat)** for free treatment up to ₹5 Lakhs.\n- Do you need help finding a specific department like Cardiology or Pediatrics?";
-    }
-    else if (input.includes("document") || input.includes("aadhar") || input.includes("pan")) {
-      content = "For most Indian government services, you need these **Standard Documents**:\n- **Identity**: Aadhar Card or Voter ID.\n- **Address**: Electricity bill or Ration card.\n- **Income**: Income Certificate from Tahsildar.\nYou can manage these in your **Digital Vault** here.";
-    }
-    else {
-      // Default / Greeting
-      if (historyLen === 0) {
-        content = "Hello! I am your **CivicCare AI Counselor**. I can help you with government schemes, filing grievances, or finding medical help. What can I assist you with today?";
-      } else {
-        content = "I'm here to help, Citizen. Could you please provide more details about the scheme or service you are looking for?";
-      }
+    if (input.includes("ayushman") || input.includes("pmjay") || input.includes("health card")) {
+      return {
+        content: "### Ayushman Bharat (PM-JAY) Eligibility\n**Ayushman Bharat** provides free medical coverage of up to **₹5 Lakhs** per year for families across the country.\n\n**Steps:**\n- Verify your name in the SECC-2011 database via the **PMJAY Official Portal**.\n- Visit any **Empanelled Public or Private Hospital** (PM-JAY Mitra).\n- Complete your **E-KYC** using Aadhar for card generation.\n\n**Tip:** Use the 'NHA' mobile app to check your balance and empanelled lists.",
+        isEmergency: false
+      };
     }
 
-    return { content, isEmergency: false };
+    if (input.includes("ration") || input.includes("food") || input.includes("pds")) {
+      return {
+        content: "### Ration Card & Food Security Guidance\nThe **One Nation One Ration Card** system allows citizens to collect food grains from any Fair Price Shop in India.\n\n**Steps:**\n- Apply for a new Ration Card on your State's **Food & Civil Supplies** website.\n- Ensure your **Aadhar is linked** to your Ration ID for Biometric verification.\n- Visit the nearest **E-POS enabled** ration shop for collection.\n\n**Tip:** Check with your Ration Dealer if you qualify for the Antyodaya Anna Yojana (AAY).",
+        isEmergency: false
+      };
+    }
+
+    if (input.includes("grievance") || input.includes("complain") || input.includes("road") || input.includes("electricity")) {
+      return {
+        content: "### Filing a Official Civic Grievance\nYou can report failures in municipal services directly to the designated department via CivicCare.\n\n**Steps:**\n- Navigate to the **Grievances Dashboard** in your app sidebar.\n- Submit a **New Complaint** with a photo of the issue.\n- Note down the **Grievance ID** for real-time tracking.\n\n**Tip:** Be specific about the locality/landmark for a faster response times.",
+        isEmergency: false
+      };
+    }
+
+    // Strict Domain Lock Enforcement
+    const expertiseKeywords = ["scheme", "hospital", "doctor", "health", "scholarship", "kisan", "farmer", "pension", "card", "id", "aadhar", "voter", "passport", "citizen", "civic", "issue", "complain", "help"];
+    const isUnrelated = !expertiseKeywords.some(k => input.includes(k));
+
+    if (isUnrelated && input.length > 5) {
+      return {
+        content: "I specialize in **government schemes**, **healthcare services**, and **civic assistance**. Please ask a related question so I can provide you with accurate guidance.",
+        isEmergency: false
+      };
+    }
+
+    return {
+      content: "### CivicCare GPT Counselor\nI am your specialized assistant for **Indian government schemes**, **medical access**, and **civic services**.\n\n**Common Queries I can help with:**\n- How to apply for **Ration Cards** or **Aadhar**.\n- Find nearest **Government Hospitals**.\n- Assistance with **Crop Insurance (PMFBY)**.\n- Reporting **Water/Road issues** to the municipality.\n\n**Tip:** Providing your **State/City** helps me give you accurate local information.",
+      isEmergency: false
+    };
   }
 }
 
