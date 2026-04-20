@@ -5,7 +5,6 @@ import { ProtectedRoute } from '@/components/auth/protected-route';
 import { useAuth } from '@/hooks/use-auth';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { 
   Settings as SettingsIcon, 
@@ -124,7 +123,9 @@ export default function SettingsPage() {
                                    <p className="text-sm font-black text-primary">Dynamic Dashboard</p>
                                    <p className="text-xs text-slate-400 font-medium italic">Adjust layout based on recent activity</p>
                                 </div>
-                                <Switch defaultChecked />
+                                <div className="h-6 w-11 rounded-full bg-emerald-500 relative flex items-center px-1 shadow-inner border border-emerald-600/10">
+                                   <div className="h-4 w-4 bg-white rounded-full shadow-lg translate-x-5" />
+                                </div>
                              </div>
                              
                              <div className="flex items-center justify-between p-8 bg-slate-50 rounded-[32px] border border-slate-100/50">
@@ -132,7 +133,9 @@ export default function SettingsPage() {
                                    <p className="text-sm font-black text-primary">Multi-language Support</p>
                                    <p className="text-xs text-slate-400 font-medium italic">Auto-translate scheme details</p>
                                 </div>
-                                <Switch defaultChecked />
+                                <div className="h-6 w-11 rounded-full bg-emerald-500 relative flex items-center px-1 shadow-inner border border-emerald-600/10">
+                                   <div className="h-4 w-4 bg-white rounded-full shadow-lg translate-x-5" />
+                                </div>
                              </div>
 
                              <div className="flex items-center justify-between p-8 bg-slate-50 rounded-[32px] border border-slate-100/50">
@@ -140,7 +143,9 @@ export default function SettingsPage() {
                                    <p className="text-sm font-black text-primary">Analytics Engine</p>
                                    <p className="text-xs text-slate-400 font-medium italic">Anonymous data sharing for better civic insights</p>
                                 </div>
-                                <Switch />
+                                <div className="h-6 w-11 rounded-full bg-slate-200 relative flex items-center px-1 shadow-inner border border-slate-300/10">
+                                   <div className="h-4 w-4 bg-white rounded-full shadow-lg" />
+                                </div>
                              </div>
                           </div>
 
@@ -177,9 +182,11 @@ export default function SettingsPage() {
                           </div>
 
                           <div className="space-y-4 pt-4">
-                             <div className="flex items-center justify-between p-6 bg-slate-50 rounded-[24px]">
+                             <div className="flex items-center justify-between p-8 bg-slate-50 rounded-[24px]">
                                 <span className="text-sm font-black text-primary">Login Alerts</span>
-                                <Switch defaultChecked />
+                                <div className="h-6 w-11 rounded-full bg-emerald-500 relative flex items-center px-1 shadow-inner border border-emerald-600/10">
+                                   <div className="h-4 w-4 bg-white rounded-full shadow-lg translate-x-5" />
+                                </div>
                              </div>
                              <div className="flex items-center justify-between p-6 bg-slate-50 rounded-[24px]">
                                 <span className="text-sm font-black text-primary">Session Management</span>
@@ -202,7 +209,7 @@ export default function SettingsPage() {
                             { title: "Grievance Updates", desc: "Status changes for your filed reports sent directly to your device.", icon: MessageSquare },
                             { title: "Civic Warnings", desc: "Emergency sanitation, traffic, and water supply alerts in your region.", icon: Bell }
                           ].map((item, i) => (
-                            <div key={i} className="flex items-start justify-between p-8 hover:bg-slate-50/50 rounded-[32px] transition-all border border-transparent hover:border-slate-50">
+                             <div key={i} className="flex items-start justify-between p-8 hover:bg-slate-50/50 rounded-[32px] transition-all border border-transparent hover:border-slate-50">
                                <div className="flex items-start space-x-6">
                                   <div className="mt-1 h-12 w-12 bg-white rounded-2xl shadow-xl flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
                                      <item.icon size={24} />
@@ -212,7 +219,9 @@ export default function SettingsPage() {
                                      <p className="text-sm text-slate-400 font-medium max-w-sm">{item.desc}</p>
                                   </div>
                                </div>
-                               <Switch defaultChecked />
+                               <div className="h-6 w-11 rounded-full bg-emerald-500 relative flex items-center px-1 shadow-inner border border-emerald-600/10">
+                                  <div className="h-4 w-4 bg-white rounded-full shadow-lg translate-x-5" />
+                                </div>
                             </div>
                           ))}
                        </CardContent>
