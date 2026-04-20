@@ -7,6 +7,8 @@ import { Menu, X, Landmark, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
+import { useAuth } from '@/hooks/use-auth';
+
 const navLinks = [
   { name: 'Home', href: '/' },
   { name: 'Services', href: '#services' },
@@ -17,6 +19,7 @@ const navLinks = [
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { isAuthenticated, loading } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,15 +62,30 @@ export function Navbar() {
           </div>
           
           <div className="flex items-center space-x-3 pl-4 border-l border-slate-200">
-            <Button variant="ghost" asChild className="font-bold hover:bg-slate-100">
-                <Link href="/login">Login</Link>
-            </Button>
-            <Button asChild className="bg-primary hover:bg-slate-800 shadow-lg shadow-primary/20 group">
-                <Link href="/register" className="flex items-center">
-                  Get Started
-                  <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
-                </Link>
-            </Button>
+            {!loading && (
+              <>
+                {isAuthenticated ? (
+                  <Button asChild className="bg-primary hover:bg-slate-800 shadow-lg shadow-primary/20 group">
+                    <Link href="/dashboard" className="flex items-center">
+                      Dashboard
+                      <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                  </Button>
+                ) : (
+                  <>
+                    <Button variant="ghost" asChild className="font-bold hover:bg-slate-100">
+                        <Link href="/login">Login</Link>
+                    </Button>
+                    <Button asChild className="bg-primary hover:bg-slate-800 shadow-lg shadow-primary/20 group">
+                        <Link href="/signup" className="flex items-center">
+                          Get Started
+                          <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
+                        </Link>
+                    </Button>
+                  </>
+                )}
+              </>
+            )}
           </div>
         </div>
 
@@ -100,12 +118,20 @@ export function Navbar() {
               </a>
             ))}
             <div className="flex flex-col gap-4 pt-4">
-               <Button variant="outline" size="lg" asChild className="rounded-2xl h-14 text-lg">
-                  <Link href="/login">Login</Link>
-              </Button>
-              <Button size="lg" asChild className="rounded-2xl h-14 text-lg bg-primary">
-                  <Link href="/register">Sign Up</Link>
-              </Button>
+              {isAuthenticated ? (
+                <Button size="lg" asChild className="rounded-2xl h-14 text-lg bg-primary">
+                  <Link href="/dashboard">Go to Dashboard</Link>
+                </Button>
+              ) : (
+                <>
+                  <Button variant="outline" size="lg" asChild className="rounded-2xl h-14 text-lg">
+                    <Link href="/login">Login</Link>
+                  </Button>
+                  <Button size="lg" asChild className="rounded-2xl h-14 text-lg bg-primary">
+                    <Link href="/signup">Sign Up</Link>
+                  </Button>
+                </>
+              )}
             </div>
           </motion.div>
         )}
