@@ -73,10 +73,10 @@ export function Navbar() {
                   </Button>
                 ) : (
                   <>
-                    <Button variant="ghost" asChild className="font-black uppercase tracking-widest text-xs hover:bg-slate-100">
+                    <Button variant="ghost" asChild className="font-black uppercase tracking-widest text-[11px] hover:bg-slate-100 px-5">
                         <Link href="/login">Login</Link>
                     </Button>
-                    <Button asChild className="bg-primary hover:bg-slate-800 shadow-lg shadow-primary/20 group font-black uppercase tracking-widest text-xs h-11 px-6 rounded-xl">
+                    <Button asChild className="bg-slate-950 text-white hover:bg-slate-800 shadow-xl shadow-slate-950/20 group font-black uppercase tracking-widest text-[11px] h-12 px-8 rounded-2xl transition-all hover:scale-105 active:scale-95">
                         <Link href="/signup" className="flex items-center">
                           Get Started
                           <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />

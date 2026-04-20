@@ -99,13 +99,13 @@ export default function LandingPage() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
-              <Button size="lg" asChild className="rounded-2xl h-16 px-10 text-lg bg-primary hover:bg-slate-800 shadow-2xl shadow-primary/30 group">
+              <Button size="lg" asChild className="rounded-2xl h-16 px-12 text-lg bg-slate-950 text-white hover:bg-slate-800 shadow-[0_20px_50px_rgba(15,23,42,0.3)] group transition-all hover:scale-105 active:scale-95 border-none font-black tracking-tight">
                 <Link href={isAuthenticated ? "/dashboard" : "/signup"}>
                   {isAuthenticated ? "Go to Dashboard" : "Get Started Now"}
-                  <ArrowRight className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="ml-2 h-6 w-6 transform group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>
-              <Button variant="outline" size="lg" asChild className="rounded-2xl h-16 px-10 text-lg border-2 hover:bg-slate-50">
+              <Button variant="outline" size="lg" asChild className="rounded-2xl h-16 px-12 text-lg border-2 border-slate-200 hover:bg-slate-50 font-black tracking-tight text-slate-600 transition-all">
                 <Link href="#services">Explore Features</Link>
               </Button>
             </div>
@@ -253,10 +253,10 @@ export default function LandingPage() {
                         Join thousands of citizens who are already using CivicCare AI to secure their future and health.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-6">
-                        <Button size="lg" asChild className="rounded-2xl h-16 px-12 text-lg bg-primary text-white hover:bg-slate-900 shadow-2xl font-black tracking-tight border-none">
+                        <Button size="lg" asChild className="rounded-2xl h-16 px-16 text-lg bg-slate-950 text-white hover:bg-slate-800 shadow-3xl font-black tracking-tight hover:scale-110 active:scale-95 transition-all border-none">
                             <Link href="/signup">Create Free Account</Link>
                         </Button>
-                        <Button variant="outline" size="lg" asChild className="rounded-2xl h-16 px-12 text-lg border-2 border-white text-white hover:bg-white hover:text-accent backdrop-blur-md font-black tracking-tight transition-all">
+                        <Button variant="outline" size="lg" asChild className="rounded-2xl h-16 px-12 text-lg border-2 border-white text-white hover:bg-white hover:text-slate-900 backdrop-blur-md font-black tracking-tight transition-all">
                             <Link href="/login">Sign In</Link>
                         </Button>
                     </div>
