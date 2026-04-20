@@ -160,7 +160,7 @@ export default function DashboardPage() {
               { title: 'Scheme Finder', icon: Search, href: '/dashboard/schemes', desc: 'Find eligible programs' },
               { title: 'Help Centers', icon: MapPin, href: '/dashboard/help-centers', desc: 'Locate nearby aid' },
               { title: 'Grievance Portal', icon: FileText, href: '/grievances/submit', desc: 'Report civic issues' },
-              { title: 'My Profile', icon: User, href: '/dashboard/profile', desc: 'Manage your data' }
+              { title: 'Advocacy Creator', icon: Landmark, href: '/dashboard/generator', desc: 'Generate formal drafts' }
             ].map((action, i) => (
               <motion.div key={action.title} variants={itemVariants}>
                 <div 

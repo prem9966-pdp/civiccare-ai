@@ -25,24 +25,28 @@ const features = [
     description: "24/7 intelligent support for all your civic and healthcare queries. Get instant answers to complex government procedures.",
     icon: MessageSquare,
     color: "bg-blue-500/10 text-blue-600",
+    href: "/dashboard/chat"
   },
   {
     title: "Scheme Finder",
     description: "Discover government schemes tailored to your profile and eligibility. Never miss out on benefits you deserve.",
     icon: Search,
     color: "bg-emerald-500/10 text-emerald-600",
+    href: "/dashboard/schemes"
   },
   {
     title: "Help Centers",
     description: "Interactive map to find hospitals, clinics, and government offices near you. Real-time availability and directions.",
     icon: MapPin,
     color: "bg-orange-500/10 text-orange-600",
+    href: "/dashboard/help-centers"
   },
   {
     title: "Grievance Support",
     description: "Easy tracking and filing of civic grievances with AI-guided assistance. We help you navigate the bureaucracy.",
     icon: ShieldCheck,
     color: "bg-purple-500/10 text-purple-600",
+    href: "/grievances/submit"
   }
 ];
 
@@ -220,7 +224,7 @@ export default function LandingPage() {
                   <p className="text-muted-foreground leading-relaxed font-medium">
                     {feature.description}
                   </p>
-                  <Link href="/login" className="inline-flex items-center text-sm font-black text-accent mt-6 group-hover:translate-x-2 transition-transform">
+                  <Link href={feature.href} className="inline-flex items-center text-sm font-black text-accent mt-6 group-hover:translate-x-2 transition-transform">
                     Learn More <ChevronRight className="ml-1 h-4 w-4" />
                   </Link>
                 </Card>
@@ -249,10 +253,10 @@ export default function LandingPage() {
                         Join thousands of citizens who are already using CivicCare AI to secure their future and health.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-6">
-                        <Button size="lg" asChild className="rounded-2xl h-16 px-12 text-lg bg-white text-accent hover:bg-slate-100 shadow-2xl font-black tracking-tight">
+                        <Button size="lg" asChild className="rounded-2xl h-16 px-12 text-lg bg-primary text-white hover:bg-slate-900 shadow-2xl font-black tracking-tight border-none">
                             <Link href="/signup">Create Free Account</Link>
                         </Button>
-                        <Button variant="outline" size="lg" asChild className="rounded-2xl h-16 px-12 text-lg border-2 border-white/30 text-white hover:bg-white/10 backdrop-blur-md font-black tracking-tight">
+                        <Button variant="outline" size="lg" asChild className="rounded-2xl h-16 px-12 text-lg border-2 border-white text-white hover:bg-white hover:text-accent backdrop-blur-md font-black tracking-tight transition-all">
                             <Link href="/login">Sign In</Link>
                         </Button>
                     </div>
