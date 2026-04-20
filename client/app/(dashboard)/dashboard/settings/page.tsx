@@ -10,7 +10,6 @@ import { Label } from '@/components/ui/label';
 import { 
   Settings as SettingsIcon, 
   Bell, 
-  ShieldSecret, 
   User, 
   LogOut, 
   Globe, 
