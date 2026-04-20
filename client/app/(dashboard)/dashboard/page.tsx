@@ -18,7 +18,8 @@ import {
   LayoutDashboard,
   Clock,
   ShieldCheck,
-  Zap
+  Zap,
+  Landmark
 } from "lucide-react";
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
