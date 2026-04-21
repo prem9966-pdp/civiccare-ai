@@ -1,6 +1,5 @@
 import ChatSession from "../models/chat.model";
 import RecommendationSession from "../models/recommendation.model";
-import GeneratedLetter from "../models/letter.model";
 import UploadedDocument from "../models/document.model";
 
 class HistoryService {
@@ -8,10 +7,9 @@ class HistoryService {
    * Aggregates all user activity into a single chronological timeline.
    */
   async getActivityTimeline(userId: string) {
-    const [chats, recommendations, letters, documents] = await Promise.all([
+    const [chats, recommendations, documents] = await Promise.all([
       ChatSession.find({ userId }).sort({ createdAt: -1 }).limit(10),
       RecommendationSession.find({ userId }).sort({ createdAt: -1 }).limit(10),
-      GeneratedLetter.find({ userId }).sort({ createdAt: -1 }).limit(10),
       UploadedDocument.find({ userId }).sort({ createdAt: -1 }).limit(10)
     ]);
 
@@ -29,13 +27,6 @@ class HistoryService {
           title: `Matched ${r.matches?.length || 0} schemes for your profile`,
           date: r.createdAt,
           meta: { matches: r.matches?.length || 0 }
-      })),
-      ...letters.map(l => ({
-          _id: l._id,
-          type: 'letter',
-          title: `Generated advocacy: ${l.subject}`,
-          date: l.createdAt,
-          meta: { authority: l.authority }
       })),
       ...documents.map(d => ({
         _id: d._id,

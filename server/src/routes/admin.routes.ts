@@ -27,7 +27,6 @@ router.use(authMiddleware, authorize(["admin"]));
 
 router.get("/summary", adminController.getDashboardSummary);
 router.get("/users", adminController.getUsersAudit);
-router.get("/complaints", adminController.getComplaints);
 
 // Catalog Operations (CRUD)
 router.post("/schemes/upsert", adminController.upsertScheme);

@@ -3,7 +3,6 @@ import { asyncHandler } from "../utils/asyncHandler";
 import User from "../models/user.model";
 import Scheme from "../models/scheme.model";
 import Hospital from "../models/hospital.model";
-import GeneratedLetter from "../models/letter.model";
 import AdminActivity from "../models/admin-activity.model";
 import { analyticsService } from "../services/analytics.service";
 import { ApiResponse } from "../utils/ApiResponse";
@@ -93,10 +92,4 @@ export const deleteHospital = asyncHandler(async (req: Request, res: Response) =
     );
 });
 
-export const getComplaints = asyncHandler(async (req: Request, res: Response) => {
-    const complaints = await GeneratedLetter.find({ type: 'Complaint' }).populate('userId', 'name email').sort({ createdAt: -1 });
 
-    return res.status(200).json(
-      new ApiResponse(200, complaints, "Global complaint registry retrieved")
-    );
-});
