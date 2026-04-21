@@ -76,18 +76,33 @@ export function LetterForm({ onDraftCreated }: LetterFormProps) {
                       <option>Complaint</option>
                       <option>Application</option>
                       <option>Request for Benefit</option>
+                      <option>Legal Notice / Appeal</option>
                   </select>
               </div>
               <div className="space-y-2">
                   <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Addressed To</label>
                   <div className="relative">
-                      <Building className="absolute left-3 top-3.5 h-4 w-4 text-slate-300" />
-                      <Input 
+                      <Building className="absolute left-3 top-3.5 h-4 w-4 text-slate-300 z-10" />
+                      <select 
                         value={formData.authority}
                         onChange={e => setFormData({...formData, authority: e.target.value})}
-                        className="pl-10 h-12" 
-                        placeholder="e.g. Health Department" 
-                      />
+                        className="w-full pl-10 h-12 bg-slate-50 border border-slate-100 rounded-xl text-sm font-bold text-slate-600 focus:ring-2 focus:ring-primary/20 outline-none appearance-none"
+                      >
+                          <option>Government Officer</option>
+                          <option>Municipal Corporation</option>
+                          <option>Police Department</option>
+                          <option>Hospital Authority</option>
+                          <option>Education Department</option>
+                          <option>Water Supply Department</option>
+                          <option>Electricity Board</option>
+                          <option>Women and Child Welfare Department</option>
+                          <option>Social Justice Department</option>
+                          <option>Collector Office</option>
+                          <option>Gram Panchayat / Municipal Council</option>
+                          <option>Transport Department</option>
+                          <option>Public Works Department</option>
+                          <option>Legal Aid Authority</option>
+                      </select>
                   </div>
               </div>
           </div>
@@ -123,12 +138,20 @@ export function LetterForm({ onDraftCreated }: LetterFormProps) {
                   <select 
                     value={formData.language}
                     onChange={e => setFormData({...formData, language: e.target.value})}
-                    className="bg-transparent text-sm font-bold text-primary focus:outline-none"
+                    className="bg-transparent text-sm font-bold text-primary focus:outline-none w-full"
                   >
-                      <option>English</option>
-                      <option>Hindi</option>
-                      <option>Kannada</option>
-                      <option>Marathi</option>
+                        <option value="English">English</option>
+                        <option value="Hindi">Hindi (हिन्दी)</option>
+                        <option value="Marathi">Marathi (मराठी)</option>
+                        <option value="Kannada">Kannada (ಕನ್ನಡ)</option>
+                        <option value="Telugu">Telugu (తెలుగు)</option>
+                        <option value="Tamil">Tamil (தமிழ்)</option>
+                        <option value="Malayalam">Malayalam (മലയാളം)</option>
+                        <option value="Bengali">Bengali (বাংলা)</option>
+                        <option value="Gujarati">Gujarati (ગુજરાતી)</option>
+                        <option value="Punjabi">Punjabi (ਪੰਜਾਬੀ)</option>
+                        <option value="Odia">Odia (ଓଡ଼ିଆ)</option>
+                        <option value="Assamese">Assamese (অসমীয়া)</option>
                   </select>
               </div>
           </div>

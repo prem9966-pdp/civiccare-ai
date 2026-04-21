@@ -12,7 +12,8 @@ export default function LettersPage() {
   const [activeDraft, setActiveDraft] = useState<any>(null);
   const [letters, setLetters] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [view, setView] = useState<'new' | 'history'>('new');
+ 
   const fetchData = async () => {
     setIsLoading(true);
     try {
@@ -53,13 +54,19 @@ export default function LettersPage() {
             </div>
         </section>
 
-        {/* Content Tabs (Mock) */}
+        {/* Content Tabs */}
         <div className="flex items-center space-x-4 border-b border-slate-100 overflow-x-auto pb-4 custom-scrollbar">
-            <button className="px-8 py-3 bg-primary text-white text-xs font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-primary/20 flex items-center shrink-0">
+            <button 
+              onClick={() => setView('new')}
+              className={`px-8 py-3 text-xs font-black uppercase tracking-widest rounded-2xl transition-all flex items-center shrink-0 ${view === 'new' ? 'bg-primary text-white shadow-xl shadow-primary/20' : 'bg-white text-slate-400 hover:bg-slate-50'}`}
+            >
                <FilePlus2 className="h-4 w-4 mr-2" /> New Advocacy
             </button>
-            <button className="px-8 py-3 bg-white text-slate-400 text-xs font-black uppercase tracking-widest rounded-2xl hover:bg-slate-50 transition-all border border-transparent hover:border-slate-100 shrink-0">
-               <History className="h-4 w-4 mr-2" /> Historical Records
+            <button 
+              onClick={() => setView('history')}
+              className={`px-8 py-3 text-xs font-black uppercase tracking-widest rounded-2xl transition-all flex items-center shrink-0 ${view === 'history' ? 'bg-primary text-white shadow-xl shadow-primary/20' : 'bg-white text-slate-400 hover:bg-slate-50'}`}
+            >
+               <History className="h-4 w-4 mr-2" /> Historical Records ({letters.length})
             </button>
             <button className="px-8 py-3 bg-white text-slate-400 text-xs font-black uppercase tracking-widest rounded-2xl hover:bg-slate-50 transition-all border border-transparent hover:border-slate-100 shrink-0">
                <Layout className="h-4 w-4 mr-2" /> Templates Hub
@@ -70,7 +77,40 @@ export default function LettersPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             {/* Left: Input/Form (5/12) */}
             <div className="lg:col-span-5 h-[calc(100vh-280px)] overflow-y-auto pr-2 custom-scrollbar pb-12">
-                <LetterForm onDraftCreated={(draft) => { setActiveDraft(draft); fetchData(); }} />
+                {view === 'new' ? (
+                  <LetterForm onDraftCreated={(draft) => { setActiveDraft(draft); fetchData(); }} />
+                ) : (
+                  <div className="space-y-4">
+                    {letters.length > 0 ? (
+                      letters.map((letter) => (
+                        <div 
+                          key={letter._id}
+                          onClick={() => setActiveDraft(letter)}
+                          className={`p-6 rounded-3xl border transition-all cursor-pointer group ${activeDraft?._id === letter._id ? 'bg-primary text-white border-primary shadow-xl shadow-primary/20' : 'bg-white border-slate-100 hover:border-primary/30 text-slate-600'}`}
+                        >
+                          <div className="flex justify-between items-start mb-2">
+                             <p className={`text-[10px] font-black uppercase tracking-widest ${activeDraft?._id === letter._id ? 'text-white/60' : 'text-slate-400'}`}>{letter.type}</p>
+                             <div className={`h-2 w-2 rounded-full ${letter.status === 'final' ? 'bg-emerald-400' : 'bg-amber-400'}`}></div>
+                          </div>
+                          <h4 className="font-bold truncate">{letter.subject}</h4>
+                          <p className={`text-xs mt-1 truncate ${activeDraft?._id === letter._id ? 'text-white/80' : 'text-slate-500'}`}>{letter.authority}</p>
+                          <div className="flex items-center mt-4 space-x-4">
+                             <span className={`text-[8px] font-black uppercase tracking-tighter ${activeDraft?._id === letter._id ? 'text-white/40' : 'text-slate-300'}`}>
+                                {new Date(letter.createdAt).toLocaleDateString()}
+                             </span>
+                             <span className={`text-[8px] font-black uppercase tracking-tighter ${activeDraft?._id === letter._id ? 'text-white/40' : 'text-slate-300'}`}>
+                                {letter.language}
+                             </span>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="text-center p-12 bg-white rounded-[2.5rem] border border-dashed border-slate-200">
+                         <p className="text-sm font-bold text-slate-400 uppercase tracking-widest">No letters found</p>
+                      </div>
+                    )}
+                  </div>
+                )}
                 
                 <div className="mt-12 p-10 bg-slate-800 text-white rounded-[2.5rem] shadow-2xl relative overflow-hidden group">
                      <div className="absolute top-0 right-0 h-48 w-48 bg-white/5 rounded-full translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-1000"></div>

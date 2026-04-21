@@ -31,6 +31,7 @@ const userNavItems = [
 
 const adminNavItems = [
   { icon: LayoutDashboard, name: 'Analytics', href: '/admin/analytics' },
+  { icon: Landmark, name: 'Advocacy Creator', href: '/dashboard/generator' },
   { icon: Search, name: 'Manage Schemes', href: '/admin/schemes' },
   { icon: Map, name: 'Manage Maps', href: '/admin/hospitals' },
   { icon: MessageSquare, name: 'User Complaints', href: '/admin/complaints' },

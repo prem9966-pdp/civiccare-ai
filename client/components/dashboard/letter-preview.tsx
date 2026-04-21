@@ -25,7 +25,7 @@ export function LetterPreview({ letter, onUpdate }: LetterPreviewProps) {
     } catch (error) {
         toast.error("Save failed");
     } finally {
-        setIsSaving(true);
+        setIsSaving(false);
     }
   };
 
@@ -66,7 +66,7 @@ export function LetterPreview({ letter, onUpdate }: LetterPreviewProps) {
               <textarea 
                 value={content}
                 onChange={e => setContent(e.target.value)}
-                className="w-full h-full min-h-[400px] bg-transparent border-none focus:ring-0 text-sm font-medium text-slate-700 leading-relaxed font-serif resize-none custom-scrollbar"
+                className="w-full h-full min-h-[400px] bg-transparent border-none focus:ring-0 text-lg font-medium text-slate-700 leading-relaxed font-sans resize-none custom-scrollbar"
                 placeholder="Write your letter here..."
               />
           </div>

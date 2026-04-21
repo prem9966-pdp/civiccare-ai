@@ -61,6 +61,73 @@ class AIService {
     }
   }
 
+  /**
+   * Generates a professionally formatted formal letter in the requested language.
+   */
+  async generateLetter(data: { type: string, authority: string, subject: string, details: string, language: string }) {
+    const { type, authority, subject, details, language } = data;
+    const apiKey = ENV.GEMINI_API_KEY || ENV.AI_API_KEY;
+
+    const prompt = `
+      You are an expert Indian Civic Advocate and Legal Draftsman.
+      Your task is to draft a formal ${type} addressed to the "${authority}".
+      
+      ### SUBJECT: ${subject}
+      ### DETAILS: ${details}
+      ### OUTPUT LANGUAGE: ${language}
+
+      ### GUIDELINES:
+      1. Use formal municipal/administrative terminology appropriate for India.
+      2. The output MUST be entirely in the requested language (${language}). If the language is not English, use the native script (e.g., Devanagari for Hindi/Marathi).
+      3. Structure: 
+         - To, [Authority Name/Department]
+         - Date: [Keep Placeholder]
+         - Subject: [Clear Subject]
+         - Salutation (Sir/Madam)
+         - Body: 3 clear paragraphs (Introduction, Details of grievance/request, Expected action).
+         - Closing (Yours faithfully/sincerely)
+         - Name & Signature [Keep Placeholder]
+      4. DO NOT include any conversational filler. Only provide the letter content.
+      5. Use Markdown for clean formatting.
+    `;
+
+    try {
+      if (!apiKey || apiKey.includes("your_") || apiKey.length < 15) throw new Error("Invalid API Key");
+
+      const response = await axios.post(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+        {
+          contents: [{ parts: [{ text: prompt }] }],
+        },
+        { headers: { "Content-Type": "application/json" }, timeout: 15000 }
+      );
+
+      const content = response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!content) throw new Error("Empty AI response");
+
+      return content.trim();
+    } catch (error) {
+      console.error("[AI_SERVICE] Letter generation failed, using fallback:", error);
+      // Basic fallback template if AI fails
+      return `
+To: The Commissioner/Head, 
+${authority}
+
+Subject: ${subject} (${language})
+
+Sir/Madam,
+
+I am writing regarding ${details}. 
+
+[Drafting Note: This is an automated placeholder because the AI service is currently unavailable. Please translate the following details into ${language} for your final letter]:
+${details}
+
+Yours faithfully,
+[Citizen Name]
+      `.trim();
+    }
+  }
+
   private detectEmergency(message: string): boolean {
     const lower = message.toLowerCase();
     return EMERGENCY_KEYWORDS.some((k) => lower.includes(k));
