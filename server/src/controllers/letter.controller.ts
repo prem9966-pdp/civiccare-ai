@@ -10,6 +10,7 @@ export const createDraft = asyncHandler(async (req: Request, res: Response) => {
   console.log("[DRAFT BACKEND] Route hit");
   console.log("[DRAFT BACKEND] req.user:", (req as any).user);
   console.log("[DRAFT BACKEND] req.body:", req.body);
+  console.log("[DRAFT BACKEND] Selected Language:", req.body.language);
   console.log("[DRAFT BACKEND] AI key exists:", !!process.env.AI_API_KEY);
 
   if (!req.user) throw new ApiError(401, "Auth required");
@@ -57,7 +58,7 @@ export const exportPDF = asyncHandler(async (req: Request, res: Response) => {
 
     if (!letter) throw new ApiError(404, "Letter not found");
 
-    const pdfUrl = await pdfService.generatePDF(letter.content, `${letter.type}_${letter.subject}`);
+    const pdfUrl = await pdfService.generatePDF(letter.content, `${letter.category}_${letter.title}`);
 
     return res.status(200).json(
       new ApiResponse(200, { pdfUrl }, "PDF export link generated")

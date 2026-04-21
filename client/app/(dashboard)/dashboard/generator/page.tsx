@@ -89,11 +89,11 @@ export default function LettersPage() {
                           className={`p-6 rounded-3xl border transition-all cursor-pointer group ${activeDraft?._id === letter._id ? 'bg-primary text-white border-primary shadow-xl shadow-primary/20' : 'bg-white border-slate-100 hover:border-primary/30 text-slate-600'}`}
                         >
                           <div className="flex justify-between items-start mb-2">
-                             <p className={`text-[10px] font-black uppercase tracking-widest ${activeDraft?._id === letter._id ? 'text-white/60' : 'text-slate-400'}`}>{letter.type}</p>
+                             <p className={`text-[10px] font-black uppercase tracking-widest ${activeDraft?._id === letter._id ? 'text-white/60' : 'text-slate-400'}`}>{letter.category}</p>
                              <div className={`h-2 w-2 rounded-full ${letter.status === 'final' ? 'bg-emerald-400' : 'bg-amber-400'}`}></div>
                           </div>
-                          <h4 className="font-bold truncate">{letter.subject}</h4>
-                          <p className={`text-xs mt-1 truncate ${activeDraft?._id === letter._id ? 'text-white/80' : 'text-slate-500'}`}>{letter.authority}</p>
+                          <h4 className="font-bold truncate">{letter.title}</h4>
+                          <p className={`text-xs mt-1 truncate ${activeDraft?._id === letter._id ? 'text-white/80' : 'text-slate-500'}`}>{letter.addressTo}</p>
                           <div className="flex items-center mt-4 space-x-4">
                              <span className={`text-[8px] font-black uppercase tracking-tighter ${activeDraft?._id === letter._id ? 'text-white/40' : 'text-slate-300'}`}>
                                 {new Date(letter.createdAt).toLocaleDateString()}

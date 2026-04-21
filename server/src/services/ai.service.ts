@@ -63,32 +63,56 @@ class AIService {
 
   /**
    * Generates a professionally formatted formal letter in the requested language.
+   * STRICTLY enforces native scripts and formal tone.
    */
-  async generateLetter(data: { type: string, authority: string, subject: string, details: string, language: string }) {
-    const { type, authority, subject, details, language } = data;
+  async generateLetter(data: { category: string, addressTo: string, title: string, description: string, language: string }) {
+    const { category, addressTo, title, description, language } = data;
     const apiKey = ENV.GEMINI_API_KEY || ENV.AI_API_KEY;
 
-    const prompt = `
-      You are an expert Indian Civic Advocate and Legal Draftsman.
-      Your task is to draft a formal ${type} addressed to the "${authority}".
-      
-      ### SUBJECT: ${subject}
-      ### DETAILS: ${details}
-      ### OUTPUT LANGUAGE: ${language}
+    // Define explicit script mapping for high accuracy
+    const scriptMapping: any = {
+        "Hindi": "Hindi (Devanagari script)",
+        "Marathi": "Marathi (Devanagari script)",
+        "Kannada": "Kannada (Kannada script)",
+        "Telugu": "Telugu (Telugu script)",
+        "Tamil": "Tamil (Tamil script)",
+        "Malayalam": "Malayalam (Malayalam script)",
+        "Bengali": "Bengali (Bengali script)",
+        "Gujarati": "Gujarati (Gujarati script)",
+        "Punjabi": "Punjabi (Gurmukhi script)",
+        "Odia": "Odia (Odia script)",
+        "Assamese": "Assamese (Assamese script)"
+    };
 
-      ### GUIDELINES:
-      1. Use formal municipal/administrative terminology appropriate for India.
-      2. The output MUST be entirely in the requested language (${language}). If the language is not English, use the native script (e.g., Devanagari for Hindi/Marathi).
-      3. Structure: 
-         - To, [Authority Name/Department]
-         - Date: [Keep Placeholder]
-         - Subject: [Clear Subject]
-         - Salutation (Sir/Madam)
-         - Body: 3 clear paragraphs (Introduction, Details of grievance/request, Expected action).
-         - Closing (Yours faithfully/sincerely)
-         - Name & Signature [Keep Placeholder]
-      4. DO NOT include any conversational filler. Only provide the letter content.
-      5. Use Markdown for clean formatting.
+    const targetScript = scriptMapping[language] || language;
+
+    const prompt = `
+      You are an official Indian Civic Advocate and Government Liaison Officer. 
+      Your task is to generate a formal and legally sound ${category} letter.
+
+      ### CRITICAL INSTRUCTION:
+      1. OUTPUT LANGUAGE: You MUST generate the EXACT and ENTIRE content in ${targetScript}.
+      2. SCRIPT: Use the native script for the language (e.g., Devanagari for Marathi).
+      3. NO ENGLISH: Do not use English words or characters unless the target language is English or if it's a technical term without a native equivalent (rarely).
+      4. TONE: High-authority, formal municipal/government tone.
+      
+      ### LETTER DETAILS:
+      - Addressed To: ${addressTo}
+      - Subject: ${title}
+      - Context/Grievance: ${description}
+
+      ### STRUCTURE:
+      - Recipient Block: (To, [Name/Post], [Department/Office])
+      - Date: (Placeholder)
+      - Subject Line: (Clear and formal)
+      - Salutation: (Respectful greeting)
+      - Body: (Minimum 3 detailed paragraphs: Introduction, Context of issue, Requested Resolution)
+      - Closing: (Formal sign-off)
+      - Sender Block: (Name, Address, Phone Placeholders)
+
+      ### FORMATTING:
+      - Use Markdown for bolding headers.
+      - Return ONLY the letter content. No conversational intros.
     `;
 
     try {
@@ -107,21 +131,18 @@ class AIService {
 
       return content.trim();
     } catch (error) {
-      console.error("[AI_SERVICE] Letter generation failed, using fallback:", error);
-      // Basic fallback template if AI fails
+      console.error("[AI_SERVICE] Multilingual Generation Failure, using placeholder:", error);
+      
       return `
-To: The Commissioner/Head, 
-${authority}
+To: ${addressTo}
 
-Subject: ${subject} (${language})
+Subject: ${title} (${language})
 
-Sir/Madam,
+[SYSTEM NOTE: AI Generation failed. Below is the untranslated draft details for manual drafting in ${language}]
 
-I am writing regarding ${details}. 
+Description: ${description}
 
-[Drafting Note: This is an automated placeholder because the AI service is currently unavailable. Please translate the following details into ${language} for your final letter]:
-${details}
-
+---
 Yours faithfully,
 [Citizen Name]
       `.trim();

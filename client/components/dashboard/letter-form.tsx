@@ -14,36 +14,36 @@ interface LetterFormProps {
 export function LetterForm({ onDraftCreated }: LetterFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
-    type: "Complaint",
-    authority: "Municipal Corporation",
-    subject: "",
-    details: "",
+    category: "Complaint",
+    addressTo: "Municipal Corporation",
+    title: "",
+    description: "",
     language: "English"
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.subject || !formData.details) return;
+    if (!formData.title || !formData.description) return;
 
-    // MANDATORY DEBUG LOGS (Step 3)
+    // MANDATORY DEBUG LOGS (Step 1 & 2)
     console.log("[DRAFT FRONTEND] Button clicked");
-    console.log("[DRAFT FRONTEND] Current form data:", formData);
-    console.log("[DRAFT FRONTEND] About to call API");
+    console.log("[DRAFT FRONTEND] Current form data payload:", formData);
+    console.log("[DRAFT FRONTEND] About to call API with language:", formData.language);
 
     setIsLoading(true);
     try {
       const response = await letterService.createDraft(formData);
       
-      // MANDATORY DEBUG LOGS (Step 3)
+      // MANDATORY DEBUG LOGS (Step 1 & 2)
       console.log("[DRAFT FRONTEND] API response:", response);
-      console.log("[DRAFT FRONTEND] Draft received:", response?.data);
+      console.log("[DRAFT FRONTEND] Draft received in language:", response?.data?.language);
 
       if (response.success) {
         toast.success("AI is drafting your official letter...");
         onDraftCreated(response.data);
       }
     } catch (error) {
-      // MANDATORY DEBUG LOGS (Step 3)
+      // MANDATORY DEBUG LOGS (Step 1 & 2)
       console.log("[DRAFT FRONTEND] Error:", error);
       toast.error("Failed to generate draft");
     } finally {
@@ -60,17 +60,17 @@ export function LetterForm({ onDraftCreated }: LetterFormProps) {
           </div>
           <div>
               <h3 className="text-2xl font-black tracking-tighter">Drafting <span className="text-accent underline decoration-accent/20 tracking-tighter">Agent</span></h3>
-              <p className="text-[10px] uppercase font-black tracking-widest text-white/60">Official Advocacy Engine v1.0</p>
+              <p className="text-[10px] uppercase font-black tracking-widest text-white/60">Official Advocacy Engine v2.0</p>
           </div>
       </div>
 
       <div className="p-10 space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Letter Type</label>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Category</label>
                   <select 
-                    value={formData.type}
-                    onChange={e => setFormData({...formData, type: e.target.value})}
+                    value={formData.category}
+                    onChange={e => setFormData({...formData, category: e.target.value})}
                     className="w-full h-12 bg-slate-50 border border-slate-100 rounded-xl px-4 text-sm font-bold text-slate-600 focus:ring-2 focus:ring-primary/20 outline-none"
                   >
                       <option>Complaint</option>
@@ -84,8 +84,8 @@ export function LetterForm({ onDraftCreated }: LetterFormProps) {
                   <div className="relative">
                       <Building className="absolute left-3 top-3.5 h-4 w-4 text-slate-300 z-10" />
                       <select 
-                        value={formData.authority}
-                        onChange={e => setFormData({...formData, authority: e.target.value})}
+                        value={formData.addressTo}
+                        onChange={e => setFormData({...formData, addressTo: e.target.value})}
                         className="w-full pl-10 h-12 bg-slate-50 border border-slate-100 rounded-xl text-sm font-bold text-slate-600 focus:ring-2 focus:ring-primary/20 outline-none appearance-none"
                       >
                           <option>Government Officer</option>
@@ -108,12 +108,12 @@ export function LetterForm({ onDraftCreated }: LetterFormProps) {
           </div>
 
           <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Subject Line</label>
+              <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Title / Subject</label>
               <div className="relative">
                   <ShieldAlert className="absolute left-3 top-3.5 h-4 w-4 text-slate-300" />
                   <Input 
-                    value={formData.subject}
-                    onChange={e => setFormData({...formData, subject: e.target.value})}
+                    value={formData.title}
+                    onChange={e => setFormData({...formData, title: e.target.value})}
                     className="pl-10 h-12" 
                     placeholder="e.g. Non-availability of PM-JAY services at Local Clinic" 
                   />
@@ -121,10 +121,10 @@ export function LetterForm({ onDraftCreated }: LetterFormProps) {
           </div>
 
           <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Describe Issue / Details</label>
+              <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Description of Issue</label>
               <textarea 
-                value={formData.details}
-                onChange={e => setFormData({...formData, details: e.target.value})}
+                value={formData.description}
+                onChange={e => setFormData({...formData, description: e.target.value})}
                 rows={4}
                 className="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-medium text-slate-600 placeholder:text-slate-300 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 placeholder="Provide as much detail as possible. AI will format this into a professional letter."

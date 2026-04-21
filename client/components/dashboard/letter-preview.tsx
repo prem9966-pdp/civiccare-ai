@@ -53,7 +53,7 @@ export function LetterPreview({ letter, onUpdate }: LetterPreviewProps) {
               </div>
               <h3 className="text-xl font-black text-primary tracking-tighter">Draft <span className="text-accent underline decoration-accent/20 tracking-tighter">Review</span></h3>
           </div>
-          <p className="text-[10px] font-black uppercase tracking-widest text-slate-300">Subject: {letter.subject}</p>
+          <p className="text-[10px] font-black uppercase tracking-widest text-slate-300">Subject: {letter.title}</p>
       </div>
 
       <div className="p-12 flex-1 relative bg-slate-50/30 overflow-hidden group">

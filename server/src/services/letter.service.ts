@@ -7,22 +7,23 @@ class LetterService {
    * Generates a formal complaint/application draft using AI.
    */
   async generateDraft(userId: string, data: any) {
-    const { type, authority, subject, details, language = "English" } = data;
+    const { category, addressTo, title, description, language = "English" } = data;
 
     // Use AI Service to generate formal content in requested language
     const content = await aiService.generateLetter({
-        type,
-        authority,
-        subject,
-        details,
+        category,
+        addressTo,
+        title,
+        description,
         language
     });
 
     return await GeneratedLetter.create({
       userId,
-      type,
-      authority,
-      subject,
+      category,
+      addressTo,
+      title,
+      description,
       content,
       language,
       status: 'draft'
