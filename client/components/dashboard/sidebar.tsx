@@ -23,7 +23,6 @@ const userNavItems = [
   { icon: Search, name: 'Schemes', href: '/dashboard/schemes' },
   { icon: MessageSquare, name: 'AI Counselor', href: '/dashboard/chat' },
   { icon: FileText, name: 'Grievance Portal', href: '/grievances/submit' },
-  { icon: Landmark, name: 'Advocacy Creator', href: '/dashboard/generator' },
   { icon: Map, name: 'Help Centers', href: '/dashboard/help-centers' },
   { icon: ShieldCheck, name: 'Documents', href: '/dashboard/documents' },
   { icon: History, name: 'History', href: '/dashboard/history' },
@@ -31,7 +30,6 @@ const userNavItems = [
 
 const adminNavItems = [
   { icon: LayoutDashboard, name: 'Analytics', href: '/admin/analytics' },
-  { icon: Landmark, name: 'Advocacy Creator', href: '/dashboard/generator' },
   { icon: Search, name: 'Manage Schemes', href: '/admin/schemes' },
   { icon: Map, name: 'Manage Maps', href: '/admin/hospitals' },
   { icon: MessageSquare, name: 'User Complaints', href: '/admin/complaints' },
