@@ -1,6 +1,6 @@
 # CivicCare AI: Proactive Citizen Empowerment Interface
 
-An AI-driven, proactive civic assistance platform designed to bridge the gap between complex government schemes and every citizen's life. CivicCare AI transforms bureaucratic discovery into a personalized, high-fidelity experience using predictive matching and mission-critical advocacy.
+An AI-driven, proactive civic assistance platform designed to bridge the gap between complex government schemes and every citizen's life. CivicCare AI transforms bureaucratic discovery into a personalized, high-fidelity experience using predictive matching and proactive assistance.
 
 ---
 
@@ -8,7 +8,6 @@ An AI-driven, proactive civic assistance platform designed to bridge the gap bet
 - **Counselor GPT**: Multilingual medical and civic AI assistant featuring built-in emergency detection.
 - **Match Engine**: Heuristic-based scheme eligibility scoring with "Deep Audit" readiness.
 - **Citizen Vault**: Secure, status-tracked credential storage (Aadhar/PAN/Income).
-- **Advocacy Agent**: Formal complaint and application drafter with serif PDF exports.
 - **Control Matrix**: Global administrative command hub for citizen audits and analytics.
 - **Proximity Discovery**: Synchronized map/list engine for hospitals and help centers.
 
@@ -67,7 +66,7 @@ npm run dev
 ## 🏗️ Architecture
 - **Monorepo Structure**: Separation of `client/` and `server/`.
 - **Vertical Integration**: Every module is self-contained with its own models, services, and controllers.
-- **Predictive Flow**: Citizens fill a profile -> Schemes are matched -> Documents are verified -> AI drafts applications.
+- **Predictive Flow**: Citizens fill a profile -> Schemes are matched -> Documents are verified.
 
 ---
 
@@ -75,4 +74,4 @@ npm run dev
 CivicCare AI is pre-seeded with high-impact Indian welfare data (PM-JAY, PM-Kisan) and healthcare assets (AIIMS, Fortis, Civic Centers), making it "Hackathon-Ready" out of the box.
 
 ---
-**CivicCare AI** • *Empowering the common citizen through digital advocacy.*
+**CivicCare AI** • *Empowering the common citizen through digital assistance.*

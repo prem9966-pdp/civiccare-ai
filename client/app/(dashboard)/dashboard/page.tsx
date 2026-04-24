@@ -18,8 +18,7 @@ import {
   LayoutDashboard,
   Clock,
   ShieldCheck,
-  Zap,
-  Landmark
+  Zap
 } from "lucide-react";
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -160,8 +159,7 @@ export default function DashboardPage() {
             {[
               { title: 'Scheme Finder', icon: Search, href: '/dashboard/schemes', desc: 'Find eligible programs' },
               { title: 'Help Centers', icon: MapPin, href: '/dashboard/help-centers', desc: 'Locate nearby aid' },
-              { title: 'Grievance Portal', icon: FileText, href: '/grievances/submit', desc: 'Report civic issues' },
-              { title: 'Advocacy Creator', icon: Landmark, href: '/dashboard/generator', desc: 'Generate formal drafts' }
+              { title: 'Grievance Portal', icon: FileText, href: '/grievances/submit', desc: 'Report civic issues' }
             ].map((action, i) => (
               <motion.div key={action.title} variants={itemVariants}>
                 <div 

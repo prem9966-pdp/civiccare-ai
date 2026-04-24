@@ -30,13 +30,11 @@ All endpoints are reachable via `http://localhost:5000/api/v1/`.
 
 ---
 
-## 🤖 Counselor & Advocacy
+## 🤖 AI Counselor hub
 | Endpoint | Method | Role | Description |
 |---|---|---|---|
 | `/chat/send` | `POST` | User | AI-synchronous message exchange. |
 | `/chat/sessions` | `GET` | User | Historical conversation archive. |
-| `/letters/draft` | `POST` | User | Formal generative-text engine. |
-| `/letters/:id/export` | `GET` | User | PDF generation and dispatch. |
 
 ---
 

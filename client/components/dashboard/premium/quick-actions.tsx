@@ -3,12 +3,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { 
-  PlusCircle, 
-  Search, 
   Map, 
   FileText,
   ArrowRight,
-  TrendingUp,
   Sparkles
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -17,16 +14,6 @@ import Link from 'next/link';
 
 export function QuickActions() {
   const actions = [
-    {
-      title: "Submit Grievance",
-      description: "Report issues to departments with AI drafting.",
-      icon: PlusCircle,
-      href: "/dashboard/generator",
-      color: "bg-primary",
-      iconColor: "text-white",
-      badge: "Fast Track",
-      theme: "from-slate-900 to-slate-800"
-    },
     {
       title: "Explore Schemes",
       description: "Find matching government benefits.",

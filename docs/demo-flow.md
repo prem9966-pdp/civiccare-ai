@@ -30,13 +30,6 @@
 
 ---
 
-## 📝 Phase 4: Digital Advocacy (180-240s)
-1. **Letter Generation**: Go to the Advocacy Letters page.
-2. **Drafting**: Input a complaint about "Long wait times at the local health center".
-3. **Review & Export**: Show the **AI-generated formal letter** in the premium previewer. Click **Export PDF** to show ready-to-print documentation.
-
----
-
 ## 🛡️ Phase 5: Admin Control Matrix (240-300s)
 1. **Admin Login**: Switch to `admin@civiccare.ai` / `adminpassword`.
 2. **Global Analytics**: Show total citizens and active schemes.

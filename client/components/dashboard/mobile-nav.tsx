@@ -9,7 +9,6 @@ const mobileNavItems = [
   { icon: LayoutDashboard, name: 'Overview', href: '/dashboard' },
   { icon: Search, name: 'Schemes', href: '/dashboard/schemes' },
   { icon: MessageSquare, name: 'AI Counselor', href: '/dashboard/chat' },
-  { icon: FileText, name: 'Applications', href: '/dashboard/generator' },
   { icon: Map, name: 'Help Centers', href: '/dashboard/help-centers' },
   { icon: ShieldCheck, name: 'Documents', href: '/dashboard/documents' },
   { icon: History, name: 'History', href: '/dashboard/history' },
